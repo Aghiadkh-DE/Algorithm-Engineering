@@ -24,3 +24,4 @@ target_link_libraries(pi_monte_carlo PRIVATE OpenMP::OpenMP_CXX)
 
 # Executable without OpenMP
 add_executable(pi_monte_carlo_no_omp pi_monte_carlo_no_omp.cpp)
+target_link_libraries(pi_monte_carlo_no_omp PRIVATE OpenMP::OpenMP_CXX)

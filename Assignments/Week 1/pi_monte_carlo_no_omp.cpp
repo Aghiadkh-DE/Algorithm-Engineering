@@ -1,7 +1,6 @@
 #include <iostream>
-#include <random>
-#include <chrono>
 #include <omp.h>
+#include <random>
 
 using namespace std;
 
@@ -12,7 +11,7 @@ int main() {
 
   int n = 100000000; // number of points to generate
   int counter = 0; // counter for points lying in the first quadrant of a unit circle
-  auto start_time = chrono::high_resolution_clock::now();
+  auto start_time = omp_get_wtime(); // omp_get_wtime() is an OpenMP library routine
 
   // compute n points and test if they lie within the first quadrant of a unit circle
   for (int i = 0; i < n; ++i) {
@@ -23,12 +22,9 @@ int main() {
     }
   }
 
-  auto end_time = chrono::high_resolution_clock::now();
-  chrono::duration<double> diff = end_time - start_time;
-  const auto run_time = diff.count();
-  const auto pi = 4 * (static_cast<double>(counter) / n);
+  auto run_time = omp_get_wtime() - start_time;
+  auto pi = 4 * (double(counter) / n);
 
   cout << "pi: " << pi << endl;
   cout << "run_time: " << run_time << " s" << endl;
-  cout << "n: " << n << endl;
-}
+  cout << "n: " << n << endl; }
