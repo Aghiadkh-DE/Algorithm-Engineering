@@ -9,7 +9,7 @@ The text’s core model is that each storage layer buffers the next one down so 
 What makes this genuinely interesting is the implied contract between hardware design and software behavior:
 
 - Hardware designers build multiple cache levels because the main memory is relatively slow and the processor–memory gap keeps growing.
-- Software “earns” speed by arranging computation to reuse data and code in tight regions (spatial/temporal locality), which keeps the working set hot in cache.
+- Software "earns" speed by arranging computation to reuse data and code in tight regions (spatial/temporal locality), which keeps the working set hot in cache.
 
 The section also makes a bold, practical claim about how much leverage this gives programmers: cache-aware code can improve the performance of their programs by an order of magnitude. That’s a huge statement and it matches what you see in real workloads: 
 two implementations with identical algorithms can differ massively if one streams through contiguous arrays and the other pointer-chases through scattered memory.
@@ -24,7 +24,7 @@ So the interesting part isn’t merely caches exist, but that the chapter quietl
 
 ---
 
-## 2) OS abstractions as engineered “illusions” (processes and virtual memory)
+## 2) OS abstractions as engineered "illusions" (processes and virtual memory)
 
 The other compelling idea is the OS as an *abstraction engine*: it intentionally constructs simplified realities that applications can rely on. In Chapter 1.7, this shows up most sharply in virtual memory and processes: the OS gives each process the illusion that it has exclusive use even though the machine is shared.
 

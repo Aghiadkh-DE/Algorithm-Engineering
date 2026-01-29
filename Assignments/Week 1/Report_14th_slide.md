@@ -5,7 +5,7 @@ Matrikel: 185359
 
 ## 1. Introduction
 OpenMP is a shared-memory parallel programming model that combines compiler directives (pragmas), a runtime library, and environment variables. 
-Slide 14 of the lecture highlights a central idea: OpenMP is not executed “magically” at runtime. Instead, the compiler translates OpenMP pragmas into low-level code that interacts with an OpenMP runtime system.
+Slide 14 of the lecture highlights a central idea: OpenMP is not executed "magically" at runtime. Instead, the compiler translates OpenMP pragmas into low-level code that interacts with an OpenMP runtime system.
 
 This report explains how OpenMP pragmas are processed by the compiler and presents the complete OpenMP execution model, including thread creation, work-sharing, synchronization, and performance aspects.
 
@@ -90,7 +90,7 @@ OpenMP defines clear rules for variable visibility inside parallel regions. The 
 - **shared(x)**: All threads reference the *same memory location*. In practice, the **address** of `x` is passed to the outlined function.
 - **private(x)**: Each thread gets its **own uninitialized instance**. The compiler typically creates a local variable in the outlined function (often in the thread’s stack frame).
 - **firstprivate(x)**: Like `private`, but **initialized** with the value before entering the parallel region. This is usually implemented via a copy in the context object.
-- **lastprivate(x)**: Additionally, the value from the “last” iteration/section is written back at the end of work-sharing constructs. This requires extra logic in the join/epilogue phase.
+- **lastprivate(x)**: Additionally, the value from the "last" iteration/section is written back at the end of work-sharing constructs. This requires extra logic in the join/epilogue phase.
 - **reduction(op: x)**: The compiler generates a **private reduction temporary** per thread and a **combining phase** at the end (often with runtime assistance or atomics/locks, depending on implementation and optimization).
 
 Conceptual example for `reduction(+:sum)`:
@@ -136,7 +136,7 @@ Is roughly transformed into:
 The compiler generates IDs for sections and invokes runtime support to assign each section to a thread.
 
 #### 3.4.3 `omp single`
-A runtime mechanism selects exactly **one** thread (often via a “single” token). There is an optional implicit barrier depending on `nowait`.
+A runtime mechanism selects exactly **one** thread (often via a "single" token). There is an optional implicit barrier depending on `nowait`.
 
 ### 3.5 Synchronization: Barriers, Critical, Atomic, Flush
 OpenMP synchronization is implemented via runtime calls or special machine instructions:
