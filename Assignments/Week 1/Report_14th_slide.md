@@ -4,7 +4,8 @@ Matrikel: 185359
 # OpenMP Pragmas and the Execution Model
 
 ## 1. Introduction
-OpenMP is a shared-memory parallel programming model that combines compiler directives (pragmas), a runtime library, and environment variables. Slide 14 of the lecture highlights a central idea: OpenMP is not executed “magically” at runtime. Instead, the compiler translates OpenMP pragmas into low-level code that interacts with an OpenMP runtime system.
+OpenMP is a shared-memory parallel programming model that combines compiler directives (pragmas), a runtime library, and environment variables. 
+Slide 14 of the lecture highlights a central idea: OpenMP is not executed “magically” at runtime. Instead, the compiler translates OpenMP pragmas into low-level code that interacts with an OpenMP runtime system.
 
 This report explains how OpenMP pragmas are processed by the compiler and presents the complete OpenMP execution model, including thread creation, work-sharing, synchronization, and performance aspects.
 
