@@ -259,14 +259,3 @@ Each parallel region ends with an implicit barrier. While this guarantees correc
 ### 8.3 Differences Between Runtime and Compiler Implementations
 Different OpenMP implementations (e.g., GCC vs. LLVM) differ in scheduling strategies and barrier implementations, which can affect performance.
 
----
-
-## 9. References
-
-1. https://www.openmp.org/specifications/
-2. https://gcc.gnu.org/onlinedocs/libgomp/
-3. https://openmp.llvm.org/
-4. https://gcc.gnu.org/onlinedocs/libgomp/Enabling-OpenMP.html
-5. https://docs.linaroforge.com/
-6. https://blog.rwth-aachen.de/hpc_import_20210107/attachments/35947076/36143199.pdf
-
