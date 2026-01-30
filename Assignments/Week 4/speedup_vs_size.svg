@@ -27,39 +27,39 @@
 <text x='70' y='454.0' font-size='12' text-anchor='end'>0.00</text>
 <line x1='80' y1='450.0' x2='870' y2='450.0' stroke='#eee'/>
 <line x1='74' y1='372.0' x2='80' y2='372.0' stroke='#111'/>
-<text x='70' y='376.0' font-size='12' text-anchor='end'>0.23</text>
+<text x='70' y='376.0' font-size='12' text-anchor='end'>0.24</text>
 <line x1='80' y1='372.0' x2='870' y2='372.0' stroke='#eee'/>
 <line x1='74' y1='294.0' x2='80' y2='294.0' stroke='#111'/>
-<text x='70' y='298.0' font-size='12' text-anchor='end'>0.47</text>
+<text x='70' y='298.0' font-size='12' text-anchor='end'>0.48</text>
 <line x1='80' y1='294.0' x2='870' y2='294.0' stroke='#eee'/>
 <line x1='74' y1='216.0' x2='80' y2='216.0' stroke='#111'/>
-<text x='70' y='220.0' font-size='12' text-anchor='end'>0.70</text>
+<text x='70' y='220.0' font-size='12' text-anchor='end'>0.71</text>
 <line x1='80' y1='216.0' x2='870' y2='216.0' stroke='#eee'/>
-<line x1='74' y1='138.0' x2='80' y2='138.0' stroke='#111'/>
-<text x='70' y='142.0' font-size='12' text-anchor='end'>0.93</text>
-<line x1='80' y1='138.0' x2='870' y2='138.0' stroke='#eee'/>
+<line x1='74' y1='138.00000000000003' x2='80' y2='138.00000000000003' stroke='#111'/>
+<text x='70' y='142.00000000000003' font-size='12' text-anchor='end'>0.95</text>
+<line x1='80' y1='138.00000000000003' x2='870' y2='138.00000000000003' stroke='#eee'/>
 <line x1='74' y1='60.0' x2='80' y2='60.0' stroke='#111'/>
-<text x='70' y='64.0' font-size='12' text-anchor='end'>1.17</text>
+<text x='70' y='64.0' font-size='12' text-anchor='end'>1.19</text>
 <line x1='80' y1='60.0' x2='870' y2='60.0' stroke='#eee'/>
 <text x='450.0' y='30' font-size='16' text-anchor='middle'>Speedup over std::sort vs Array Size (all threads)</text>
 <text x='450.0' y='500' font-size='14' text-anchor='middle'>Array size (n)</text>
 <text x='20' y='260.0' font-size='14' text-anchor='middle' transform='rotate(-90 20,260.0)'>Relative speedup over std::sort</text>
-<path d='M 80.0 208.7 L 167.8 207.8 L 255.6 178.5 L 343.3 230.0 L 431.1 187.8 L 650.6 230.9 L 870.0 178.9' fill='none' stroke='#1f77b4' stroke-width='2'/>
-<circle cx='80.0' cy='208.7' r='3.5' fill='#1f77b4'/>
-<circle cx='167.8' cy='207.8' r='3.5' fill='#1f77b4'/>
-<circle cx='255.6' cy='178.5' r='3.5' fill='#1f77b4'/>
-<circle cx='343.3' cy='230.0' r='3.5' fill='#1f77b4'/>
-<circle cx='431.1' cy='187.8' r='3.5' fill='#1f77b4'/>
-<circle cx='650.6' cy='230.9' r='3.5' fill='#1f77b4'/>
-<circle cx='870.0' cy='178.9' r='3.5' fill='#1f77b4'/>
-<path d='M 80.0 168.3 L 167.8 131.5 L 255.6 121.2 L 343.3 82.6 L 431.1 93.7 L 650.6 163.6 L 870.0 60.0' fill='none' stroke='#d62728' stroke-width='2'/>
-<circle cx='80.0' cy='168.3' r='3.5' fill='#d62728'/>
-<circle cx='167.8' cy='131.5' r='3.5' fill='#d62728'/>
-<circle cx='255.6' cy='121.2' r='3.5' fill='#d62728'/>
-<circle cx='343.3' cy='82.6' r='3.5' fill='#d62728'/>
-<circle cx='431.1' cy='93.7' r='3.5' fill='#d62728'/>
-<circle cx='650.6' cy='163.6' r='3.5' fill='#d62728'/>
-<circle cx='870.0' cy='60.0' r='3.5' fill='#d62728'/>
+<path d='M 80.0 208.3 L 167.8 212.9 L 255.6 193.0 L 343.3 194.1 L 431.1 196.1 L 650.6 173.5 L 870.0 203.4' fill='none' stroke='#1f77b4' stroke-width='2'/>
+<circle cx='80.0' cy='208.3' r='3.5' fill='#1f77b4'/>
+<circle cx='167.8' cy='212.9' r='3.5' fill='#1f77b4'/>
+<circle cx='255.6' cy='193.0' r='3.5' fill='#1f77b4'/>
+<circle cx='343.3' cy='194.1' r='3.5' fill='#1f77b4'/>
+<circle cx='431.1' cy='196.1' r='3.5' fill='#1f77b4'/>
+<circle cx='650.6' cy='173.5' r='3.5' fill='#1f77b4'/>
+<circle cx='870.0' cy='203.4' r='3.5' fill='#1f77b4'/>
+<path d='M 80.0 135.4 L 167.8 118.5 L 255.6 125.3 L 343.3 60.0 L 431.1 146.7 L 650.6 74.2 L 870.0 119.9' fill='none' stroke='#d62728' stroke-width='2'/>
+<circle cx='80.0' cy='135.4' r='3.5' fill='#d62728'/>
+<circle cx='167.8' cy='118.5' r='3.5' fill='#d62728'/>
+<circle cx='255.6' cy='125.3' r='3.5' fill='#d62728'/>
+<circle cx='343.3' cy='60.0' r='3.5' fill='#d62728'/>
+<circle cx='431.1' cy='146.7' r='3.5' fill='#d62728'/>
+<circle cx='650.6' cy='74.2' r='3.5' fill='#d62728'/>
+<circle cx='870.0' cy='119.9' r='3.5' fill='#d62728'/>
 <rect x='700' y='70' width='160' height='50' fill='white' stroke='#ccc'/>
 <line x1='710' y1='82' x2='730' y2='82' stroke='#1f77b4' stroke-width='2'/>
 <text x='735' y='86' font-size='12'>min_max_quicksort</text>
