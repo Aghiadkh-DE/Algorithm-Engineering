@@ -33,7 +33,7 @@ execution can lead to methods that scale better and waste less time and energy o
 
 
 Under Hardware architecture, the opportunity is hardware streamlining, with examples of processor simplification and domain 
-specialization. The point is that, when you cannot count on frequency scaling and ever-more-complex general-purpose cores to 
+specialization. The point is that, when one cannot count on frequency scaling and ever-more-complex general-purpose cores to 
 raise single-thread speed, one path forward is to simplify cores so they are more energy- and area-efficient, and then use the 
 saved resources to deliver throughput by replication or by improving the memory system. Another path is specialization: building 
 hardware tailored to a particular workload class rather than trying to be equally good at everything. Special-purpose units can 
