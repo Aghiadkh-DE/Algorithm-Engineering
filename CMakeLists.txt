@@ -4,4 +4,5 @@ set(CMAKE_CXX_STANDARD 26)
 
 add_subdirectory("Assignments/Week 1")
 add_subdirectory("Assignments/Week 2")
+add_subdirectory("Assignments/Week 3")
 

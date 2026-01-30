@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(Week1)
+project(Week3)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -19,9 +19,6 @@ endif()
 find_package(OpenMP REQUIRED)
 
 # Executable with OpenMP
-add_executable(pi_monte_carlo pi_monte_carlo.cpp)
-target_link_libraries(pi_monte_carlo PRIVATE OpenMP::OpenMP_CXX)
+add_executable(pi_monte_carlo_lcg pi_monte_carlo_lcg.cpp)
+target_link_libraries(pi_monte_carlo_lcg PRIVATE OpenMP::OpenMP_CXX)
 
-# Executable without OpenMP
-add_executable(pi_monte_carlo_no_omp pi_monte_carlo_no_omp.cpp)
-target_link_libraries(pi_monte_carlo_no_omp PRIVATE OpenMP::OpenMP_CXX)

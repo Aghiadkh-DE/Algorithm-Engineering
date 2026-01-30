@@ -35,3 +35,19 @@ static chunking but can worsen with fine-grained scheduling. Overall, for suffic
 reasonably until it hits the memory bandwidth ceiling, but for small boards and or few cells per thread it does not use
 the cores efficiently due to per-generation overhead and synchronization costs, with potential additional degradation 
 from cache-line effects driven by the small element size.
+
+### PI Monte Carlo Optimization using LCG 
+
+The runtime of the old `pi_monte_carlo` is around ~0.3 seconds. The second variant `pi_monte_carlo_lcg` offers a 
+significant optimization step up leading to a runtime of approximately ~0.05 seconds. This improvement is primarily due 
+to the replacement of the standard library's random number generator. 
+
+Both versions parallelize the same loop, so the main runtime difference comes from what happens inside
+each iteration. The fast version uses a tiny custom LCG random generator that is likely inlined and consists of
+a few inexpensive integer operations, so the loop body stays very light. The slow version uses `std::default_random_engine`
+together with `std::uniform_real_distribution<double>`, which typically adds significantly more arithmetic and control 
+flow to convert engine output into doubles, making each iteration much more expensive. The counter-merge also
+differs: `reduction(+ : counter)` keeps per-thread counters and combines them efficiently at the end, while the second 
+version adds each thread’s local result with an atomic, which adds some synchronization overhead, though it’s minor
+since it happens only once per thread. Overall, most of the speedup is from faster RNG; reduction vs. atomic is
+a smaller secondary effect.
