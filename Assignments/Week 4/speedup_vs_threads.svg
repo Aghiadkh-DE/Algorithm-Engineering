@@ -1,0 +1,158 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='900' height='520'>
+<rect width='100%' height='100%' fill='white'/>
+<line x1='80' y1='60' x2='80' y2='450' stroke='#111' stroke-width='1.5'/>
+<line x1='80' y1='450' x2='870' y2='450' stroke='#111' stroke-width='1.5'/>
+<line x1='80.0' y1='450' x2='80.0' y2='456' stroke='#111'/>
+<text x='80.0' y='474' font-size='12' text-anchor='middle'>1</text>
+<line x1='80.0' y1='60' x2='80.0' y2='450' stroke='#ddd'/>
+<line x1='112.91666666666666' y1='450' x2='112.91666666666666' y2='456' stroke='#111'/>
+<text x='112.91666666666666' y='474' font-size='12' text-anchor='middle'>2</text>
+<line x1='112.91666666666666' y1='60' x2='112.91666666666666' y2='450' stroke='#ddd'/>
+<line x1='145.83333333333331' y1='450' x2='145.83333333333331' y2='456' stroke='#111'/>
+<text x='145.83333333333331' y='474' font-size='12' text-anchor='middle'>3</text>
+<line x1='145.83333333333331' y1='60' x2='145.83333333333331' y2='450' stroke='#ddd'/>
+<line x1='178.75' y1='450' x2='178.75' y2='456' stroke='#111'/>
+<text x='178.75' y='474' font-size='12' text-anchor='middle'>4</text>
+<line x1='178.75' y1='60' x2='178.75' y2='450' stroke='#ddd'/>
+<line x1='211.66666666666666' y1='450' x2='211.66666666666666' y2='456' stroke='#111'/>
+<text x='211.66666666666666' y='474' font-size='12' text-anchor='middle'>5</text>
+<line x1='211.66666666666666' y1='60' x2='211.66666666666666' y2='450' stroke='#ddd'/>
+<line x1='244.58333333333334' y1='450' x2='244.58333333333334' y2='456' stroke='#111'/>
+<text x='244.58333333333334' y='474' font-size='12' text-anchor='middle'>6</text>
+<line x1='244.58333333333334' y1='60' x2='244.58333333333334' y2='450' stroke='#ddd'/>
+<line x1='277.5' y1='450' x2='277.5' y2='456' stroke='#111'/>
+<text x='277.5' y='474' font-size='12' text-anchor='middle'>7</text>
+<line x1='277.5' y1='60' x2='277.5' y2='450' stroke='#ddd'/>
+<line x1='310.4166666666667' y1='450' x2='310.4166666666667' y2='456' stroke='#111'/>
+<text x='310.4166666666667' y='474' font-size='12' text-anchor='middle'>8</text>
+<line x1='310.4166666666667' y1='60' x2='310.4166666666667' y2='450' stroke='#ddd'/>
+<line x1='343.3333333333333' y1='450' x2='343.3333333333333' y2='456' stroke='#111'/>
+<text x='343.3333333333333' y='474' font-size='12' text-anchor='middle'>9</text>
+<line x1='343.3333333333333' y1='60' x2='343.3333333333333' y2='450' stroke='#ddd'/>
+<line x1='376.25' y1='450' x2='376.25' y2='456' stroke='#111'/>
+<text x='376.25' y='474' font-size='12' text-anchor='middle'>10</text>
+<line x1='376.25' y1='60' x2='376.25' y2='450' stroke='#ddd'/>
+<line x1='409.1666666666667' y1='450' x2='409.1666666666667' y2='456' stroke='#111'/>
+<text x='409.1666666666667' y='474' font-size='12' text-anchor='middle'>11</text>
+<line x1='409.1666666666667' y1='60' x2='409.1666666666667' y2='450' stroke='#ddd'/>
+<line x1='442.0833333333333' y1='450' x2='442.0833333333333' y2='456' stroke='#111'/>
+<text x='442.0833333333333' y='474' font-size='12' text-anchor='middle'>12</text>
+<line x1='442.0833333333333' y1='60' x2='442.0833333333333' y2='450' stroke='#ddd'/>
+<line x1='475.0' y1='450' x2='475.0' y2='456' stroke='#111'/>
+<text x='475.0' y='474' font-size='12' text-anchor='middle'>13</text>
+<line x1='475.0' y1='60' x2='475.0' y2='450' stroke='#ddd'/>
+<line x1='507.91666666666663' y1='450' x2='507.91666666666663' y2='456' stroke='#111'/>
+<text x='507.91666666666663' y='474' font-size='12' text-anchor='middle'>14</text>
+<line x1='507.91666666666663' y1='60' x2='507.91666666666663' y2='450' stroke='#ddd'/>
+<line x1='540.8333333333334' y1='450' x2='540.8333333333334' y2='456' stroke='#111'/>
+<text x='540.8333333333334' y='474' font-size='12' text-anchor='middle'>15</text>
+<line x1='540.8333333333334' y1='60' x2='540.8333333333334' y2='450' stroke='#ddd'/>
+<line x1='573.75' y1='450' x2='573.75' y2='456' stroke='#111'/>
+<text x='573.75' y='474' font-size='12' text-anchor='middle'>16</text>
+<line x1='573.75' y1='60' x2='573.75' y2='450' stroke='#ddd'/>
+<line x1='606.6666666666666' y1='450' x2='606.6666666666666' y2='456' stroke='#111'/>
+<text x='606.6666666666666' y='474' font-size='12' text-anchor='middle'>17</text>
+<line x1='606.6666666666666' y1='60' x2='606.6666666666666' y2='450' stroke='#ddd'/>
+<line x1='639.5833333333334' y1='450' x2='639.5833333333334' y2='456' stroke='#111'/>
+<text x='639.5833333333334' y='474' font-size='12' text-anchor='middle'>18</text>
+<line x1='639.5833333333334' y1='60' x2='639.5833333333334' y2='450' stroke='#ddd'/>
+<line x1='672.5' y1='450' x2='672.5' y2='456' stroke='#111'/>
+<text x='672.5' y='474' font-size='12' text-anchor='middle'>19</text>
+<line x1='672.5' y1='60' x2='672.5' y2='450' stroke='#ddd'/>
+<line x1='705.4166666666666' y1='450' x2='705.4166666666666' y2='456' stroke='#111'/>
+<text x='705.4166666666666' y='474' font-size='12' text-anchor='middle'>20</text>
+<line x1='705.4166666666666' y1='60' x2='705.4166666666666' y2='450' stroke='#ddd'/>
+<line x1='738.3333333333334' y1='450' x2='738.3333333333334' y2='456' stroke='#111'/>
+<text x='738.3333333333334' y='474' font-size='12' text-anchor='middle'>21</text>
+<line x1='738.3333333333334' y1='60' x2='738.3333333333334' y2='450' stroke='#ddd'/>
+<line x1='771.25' y1='450' x2='771.25' y2='456' stroke='#111'/>
+<text x='771.25' y='474' font-size='12' text-anchor='middle'>22</text>
+<line x1='771.25' y1='60' x2='771.25' y2='450' stroke='#ddd'/>
+<line x1='804.1666666666666' y1='450' x2='804.1666666666666' y2='456' stroke='#111'/>
+<text x='804.1666666666666' y='474' font-size='12' text-anchor='middle'>23</text>
+<line x1='804.1666666666666' y1='60' x2='804.1666666666666' y2='450' stroke='#ddd'/>
+<line x1='837.0833333333334' y1='450' x2='837.0833333333334' y2='456' stroke='#111'/>
+<text x='837.0833333333334' y='474' font-size='12' text-anchor='middle'>24</text>
+<line x1='837.0833333333334' y1='60' x2='837.0833333333334' y2='450' stroke='#ddd'/>
+<line x1='870.0' y1='450' x2='870.0' y2='456' stroke='#111'/>
+<text x='870.0' y='474' font-size='12' text-anchor='middle'>25</text>
+<line x1='870.0' y1='60' x2='870.0' y2='450' stroke='#ddd'/>
+<line x1='74' y1='450.0' x2='80' y2='450.0' stroke='#111'/>
+<text x='70' y='454.0' font-size='12' text-anchor='end'>0.00</text>
+<line x1='80' y1='450.0' x2='870' y2='450.0' stroke='#eee'/>
+<line x1='74' y1='372.0' x2='80' y2='372.0' stroke='#111'/>
+<text x='70' y='376.0' font-size='12' text-anchor='end'>0.25</text>
+<line x1='80' y1='372.0' x2='870' y2='372.0' stroke='#eee'/>
+<line x1='74' y1='294.0' x2='80' y2='294.0' stroke='#111'/>
+<text x='70' y='298.0' font-size='12' text-anchor='end'>0.50</text>
+<line x1='80' y1='294.0' x2='870' y2='294.0' stroke='#eee'/>
+<line x1='74' y1='216.0' x2='80' y2='216.0' stroke='#111'/>
+<text x='70' y='220.0' font-size='12' text-anchor='end'>0.74</text>
+<line x1='80' y1='216.0' x2='870' y2='216.0' stroke='#eee'/>
+<line x1='74' y1='138.00000000000003' x2='80' y2='138.00000000000003' stroke='#111'/>
+<text x='70' y='142.00000000000003' font-size='12' text-anchor='end'>0.99</text>
+<line x1='80' y1='138.00000000000003' x2='870' y2='138.00000000000003' stroke='#eee'/>
+<line x1='74' y1='60.0' x2='80' y2='60.0' stroke='#111'/>
+<text x='70' y='64.0' font-size='12' text-anchor='end'>1.24</text>
+<line x1='80' y1='60.0' x2='870' y2='60.0' stroke='#eee'/>
+<text x='450.0' y='30' font-size='16' text-anchor='middle'>Speedup over std::sort vs Threads (n=10000000)</text>
+<text x='450.0' y='500' font-size='14' text-anchor='middle'>Threads</text>
+<text x='20' y='260.0' font-size='14' text-anchor='middle' transform='rotate(-90 20,260.0)'>Relative speedup over std::sort</text>
+<path d='M 80.0 374.5 L 112.9 369.4 L 145.8 322.1 L 178.8 273.2 L 211.7 230.5 L 244.6 205.0 L 277.5 268.4 L 310.4 210.1 L 343.3 260.5 L 376.2 238.0 L 409.2 208.8 L 442.1 235.0 L 475.0 252.6 L 507.9 212.9 L 540.8 222.6 L 573.8 228.0 L 606.7 219.6 L 639.6 228.3 L 672.5 199.2 L 705.4 257.4 L 738.3 256.8 L 771.2 196.7 L 804.2 242.5 L 837.1 254.1 L 870.0 182.9' fill='none' stroke='#1f77b4' stroke-width='2'/>
+<circle cx='80.0' cy='374.5' r='3.5' fill='#1f77b4'/>
+<circle cx='112.9' cy='369.4' r='3.5' fill='#1f77b4'/>
+<circle cx='145.8' cy='322.1' r='3.5' fill='#1f77b4'/>
+<circle cx='178.8' cy='273.2' r='3.5' fill='#1f77b4'/>
+<circle cx='211.7' cy='230.5' r='3.5' fill='#1f77b4'/>
+<circle cx='244.6' cy='205.0' r='3.5' fill='#1f77b4'/>
+<circle cx='277.5' cy='268.4' r='3.5' fill='#1f77b4'/>
+<circle cx='310.4' cy='210.1' r='3.5' fill='#1f77b4'/>
+<circle cx='343.3' cy='260.5' r='3.5' fill='#1f77b4'/>
+<circle cx='376.2' cy='238.0' r='3.5' fill='#1f77b4'/>
+<circle cx='409.2' cy='208.8' r='3.5' fill='#1f77b4'/>
+<circle cx='442.1' cy='235.0' r='3.5' fill='#1f77b4'/>
+<circle cx='475.0' cy='252.6' r='3.5' fill='#1f77b4'/>
+<circle cx='507.9' cy='212.9' r='3.5' fill='#1f77b4'/>
+<circle cx='540.8' cy='222.6' r='3.5' fill='#1f77b4'/>
+<circle cx='573.8' cy='228.0' r='3.5' fill='#1f77b4'/>
+<circle cx='606.7' cy='219.6' r='3.5' fill='#1f77b4'/>
+<circle cx='639.6' cy='228.3' r='3.5' fill='#1f77b4'/>
+<circle cx='672.5' cy='199.2' r='3.5' fill='#1f77b4'/>
+<circle cx='705.4' cy='257.4' r='3.5' fill='#1f77b4'/>
+<circle cx='738.3' cy='256.8' r='3.5' fill='#1f77b4'/>
+<circle cx='771.2' cy='196.7' r='3.5' fill='#1f77b4'/>
+<circle cx='804.2' cy='242.5' r='3.5' fill='#1f77b4'/>
+<circle cx='837.1' cy='254.1' r='3.5' fill='#1f77b4'/>
+<circle cx='870.0' cy='182.9' r='3.5' fill='#1f77b4'/>
+<path d='M 80.0 344.3 L 112.9 336.3 L 145.8 275.1 L 178.8 188.7 L 211.7 188.3 L 244.6 198.6 L 277.5 140.1 L 310.4 149.0 L 343.3 156.2 L 376.2 131.2 L 409.2 160.0 L 442.1 126.8 L 475.0 153.9 L 507.9 155.2 L 540.8 105.3 L 573.8 137.9 L 606.7 115.8 L 639.6 124.6 L 672.5 125.7 L 705.4 151.4 L 738.3 128.5 L 771.2 141.4 L 804.2 144.6 L 837.1 128.5 L 870.0 60.0' fill='none' stroke='#d62728' stroke-width='2'/>
+<circle cx='80.0' cy='344.3' r='3.5' fill='#d62728'/>
+<circle cx='112.9' cy='336.3' r='3.5' fill='#d62728'/>
+<circle cx='145.8' cy='275.1' r='3.5' fill='#d62728'/>
+<circle cx='178.8' cy='188.7' r='3.5' fill='#d62728'/>
+<circle cx='211.7' cy='188.3' r='3.5' fill='#d62728'/>
+<circle cx='244.6' cy='198.6' r='3.5' fill='#d62728'/>
+<circle cx='277.5' cy='140.1' r='3.5' fill='#d62728'/>
+<circle cx='310.4' cy='149.0' r='3.5' fill='#d62728'/>
+<circle cx='343.3' cy='156.2' r='3.5' fill='#d62728'/>
+<circle cx='376.2' cy='131.2' r='3.5' fill='#d62728'/>
+<circle cx='409.2' cy='160.0' r='3.5' fill='#d62728'/>
+<circle cx='442.1' cy='126.8' r='3.5' fill='#d62728'/>
+<circle cx='475.0' cy='153.9' r='3.5' fill='#d62728'/>
+<circle cx='507.9' cy='155.2' r='3.5' fill='#d62728'/>
+<circle cx='540.8' cy='105.3' r='3.5' fill='#d62728'/>
+<circle cx='573.8' cy='137.9' r='3.5' fill='#d62728'/>
+<circle cx='606.7' cy='115.8' r='3.5' fill='#d62728'/>
+<circle cx='639.6' cy='124.6' r='3.5' fill='#d62728'/>
+<circle cx='672.5' cy='125.7' r='3.5' fill='#d62728'/>
+<circle cx='705.4' cy='151.4' r='3.5' fill='#d62728'/>
+<circle cx='738.3' cy='128.5' r='3.5' fill='#d62728'/>
+<circle cx='771.2' cy='141.4' r='3.5' fill='#d62728'/>
+<circle cx='804.2' cy='144.6' r='3.5' fill='#d62728'/>
+<circle cx='837.1' cy='128.5' r='3.5' fill='#d62728'/>
+<circle cx='870.0' cy='60.0' r='3.5' fill='#d62728'/>
+<rect x='700' y='70' width='160' height='50' fill='white' stroke='#ccc'/>
+<line x1='710' y1='82' x2='730' y2='82' stroke='#1f77b4' stroke-width='2'/>
+<text x='735' y='86' font-size='12'>min_max_quicksort</text>
+<line x1='710' y1='102' x2='730' y2='102' stroke='#d62728' stroke-width='2'/>
+<text x='735' y='106' font-size='12'>__gnu_parallel::sort</text>
+</svg>

@@ -11,7 +11,7 @@ if(MSVC)
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native -mtune=native")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native -mtune=native -DNDEBUG")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -g")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -g -D _GLIBCXX_PARALLEL")
     add_compile_options(-Wall -Wextra -pedantic)
 endif()
 
@@ -21,4 +21,5 @@ find_package(OpenMP REQUIRED)
 # Executable with OpenMP
 add_executable(min_max_quicksort min_max_quicksort.cpp)
 target_link_libraries(min_max_quicksort PRIVATE OpenMP::OpenMP_CXX)
+target_compile_definitions(min_max_quicksort PRIVATE _GLIBCXX_PARALLEL)
 

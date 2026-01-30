@@ -1,8 +1,16 @@
+#include <algorithm>
+#include <cstdint>
+#include <cstdlib>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
-#include <vector>
 #include <limits>
-#include <omp.h>
 #include <parallel/algorithm>
+#include <parallel/settings.h>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <omp.h>
 
 inline int64_t average(int64_t a, int64_t b) {
     return (a & b) + ((a ^ b) >> 1);
@@ -102,54 +110,245 @@ bool verify_qs_correctness(int64_t size) {
     return data == data_copy;  // check if arrays are equal
 }
 
-int main() {
-    // test correctness of min_max_quicksort
-    const std::vector<int64_t> sizes = {0, 1, 23, 133, 1777, 57462, 786453};
-    for (const auto &size: sizes) {
+std::vector<int64_t> parse_int64_list(const std::string &text) {
+    std::vector<int64_t> values;
+    std::stringstream ss(text);
+    std::string item;
+    while (std::getline(ss, item, ',')) {
+        if (!item.empty()) {
+            values.push_back(std::stoll(item));
+        }
+    }
+    return values;
+}
+
+std::vector<int> parse_int_list(const std::string &text) {
+    std::vector<int> values;
+    std::stringstream ss(text);
+    std::string item;
+    while (std::getline(ss, item, ',')) {
+        if (!item.empty()) {
+            values.push_back(std::stoi(item));
+        }
+    }
+    return values;
+}
+
+std::string default_output_path() {
+    std::string source_path = __FILE__;
+    size_t pos = source_path.find_last_of("/\\");
+    if (pos == std::string::npos) {
+        return "benchmark_results.csv";
+    }
+    return source_path.substr(0, pos + 1) + "benchmark_results.csv";
+}
+
+bool has_arg(const std::string &arg, const std::string &name, std::string &value) {
+    if (arg == name) {
+        return false;
+    }
+    std::string prefix = name + "=";
+    if (arg.rfind(prefix, 0) == 0) {
+        value = arg.substr(prefix.size());
+        return true;
+    }
+    return false;
+}
+
+double median(std::vector<double> values) {
+    if (values.empty()) {
+        return 0.0;
+    }
+    std::sort(values.begin(), values.end());
+    size_t mid = values.size() / 2;
+    if (values.size() % 2 == 1) {
+        return values[mid];
+    }
+    return 0.5 * (values[mid - 1] + values[mid]);
+}
+
+double benchmark_std_sort(const std::vector<int64_t> &base, int trials, bool verify) {
+    std::vector<double> times;
+    times.reserve(trials);
+    std::vector<int64_t> work(base.size());
+    for (int i = 0; i < trials; ++i) {
+        std::copy(base.begin(), base.end(), work.begin());
+        double start = omp_get_wtime();
+        std::sort(work.begin(), work.end());
+        double end = omp_get_wtime();
+        if (verify && !std::is_sorted(work.begin(), work.end())) {
+            std::cerr << "std::sort failed to sort data.\n";
+            std::exit(2);
+        }
+        times.push_back(end - start);
+    }
+    return median(times);
+}
+
+double benchmark_min_max(const std::vector<int64_t> &base, int threads, int trials, bool verify) {
+    std::vector<double> times;
+    times.reserve(trials);
+    std::vector<int64_t> work(base.size());
+    for (int i = 0; i < trials; ++i) {
+        std::copy(base.begin(), base.end(), work.begin());
+        double start = omp_get_wtime();
+        min_max_quicksort(work.data(), static_cast<int64_t>(work.size()), threads);
+        double end = omp_get_wtime();
+        if (verify && !std::is_sorted(work.begin(), work.end())) {
+            std::cerr << "min_max_quicksort failed to sort data.\n";
+            std::exit(2);
+        }
+        times.push_back(end - start);
+    }
+    return median(times);
+}
+
+double benchmark_gnu_parallel(const std::vector<int64_t> &base, int threads, int trials, bool verify) {
+    std::vector<double> times;
+    times.reserve(trials);
+    std::vector<int64_t> work(base.size());
+    for (int i = 0; i < trials; ++i) {
+        std::copy(base.begin(), base.end(), work.begin());
+        double start = omp_get_wtime();
+        __gnu_parallel::sort(work.begin(), work.end(), __gnu_parallel::parallel_tag(threads));
+        double end = omp_get_wtime();
+        if (verify && !std::is_sorted(work.begin(), work.end())) {
+            std::cerr << "__gnu_parallel::sort failed to sort data.\n";
+            std::exit(2);
+        }
+        times.push_back(end - start);
+    }
+    return median(times);
+}
+
+std::vector<int64_t> generate_data(int64_t size, uint64_t seed) {
+    std::vector<int64_t> data(size);
+    Xoroshiro128Plus generator(seed);
+    for (int64_t i = 0; i < size; ++i) {
+        data[i] = static_cast<int64_t>(generator());
+    }
+    return data;
+}
+
+int main(int argc, char **argv) {
+    // Defaults
+    int trials = 3;
+    uint64_t seed = 3;
+    int64_t thread_size = 10000000;
+    std::vector<int64_t> size_sweep = {10000000, 20000000, 30000000, 40000000, 50000000, 75000000, 100000000};
+    std::vector<int> thread_sweep;
+    std::string output_path = default_output_path();
+    bool verify = false;
+
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        std::string value;
+        if (arg == "--help") {
+            std::cout << "Usage: min_max_quicksort [options]\n"
+                      << "  --sizes=LIST            Comma-separated sizes for size sweep\n"
+                      << "  --threads=LIST          Comma-separated thread counts for thread sweep\n"
+                      << "  --thread-size=N         Array size for thread sweep (>=1e7 recommended)\n"
+                      << "  --trials=N              Trials per algorithm (median)\n"
+                      << "  --seed=N                RNG seed\n"
+                      << "  --out=FILE              CSV output path\n"
+                      << "  --verify                Verify sorting correctness\n";
+            return 0;
+        }
+
+        if (has_arg(arg, "--sizes", value)) {
+            size_sweep = parse_int64_list(value);
+        } else if (arg == "--sizes" && i + 1 < argc) {
+            size_sweep = parse_int64_list(argv[++i]);
+        } else if (has_arg(arg, "--threads", value)) {
+            thread_sweep = parse_int_list(value);
+        } else if (arg == "--threads" && i + 1 < argc) {
+            thread_sweep = parse_int_list(argv[++i]);
+        } else if (has_arg(arg, "--thread-size", value)) {
+            thread_size = std::stoll(value);
+        } else if (arg == "--thread-size" && i + 1 < argc) {
+            thread_size = std::stoll(argv[++i]);
+        } else if (has_arg(arg, "--trials", value)) {
+            trials = std::stoi(value);
+        } else if (arg == "--trials" && i + 1 < argc) {
+            trials = std::stoi(argv[++i]);
+        } else if (has_arg(arg, "--seed", value)) {
+            seed = static_cast<uint64_t>(std::stoull(value));
+        } else if (arg == "--seed" && i + 1 < argc) {
+            seed = static_cast<uint64_t>(std::stoull(argv[++i]));
+        } else if (has_arg(arg, "--out", value)) {
+            output_path = value;
+        } else if (arg == "--out" && i + 1 < argc) {
+            output_path = argv[++i];
+        } else if (arg == "--verify") {
+            verify = true;
+        }
+    }
+
+    // test correctness of min_max_quicksort on small sizes
+    const std::vector<int64_t> verify_sizes = {0, 1, 23, 133, 1777, 57462, 786453};
+    for (const auto &size : verify_sizes) {
         if (!verify_qs_correctness(size)) {
             std::cout << "min_max_quicksort is incorrect for size " << size << "!\n";
             return 1;
         }
     }
 
-    const int64_t SIZE = 10000000;
+    omp_set_dynamic(0);
 
-    std::vector<int64_t> data(SIZE);
-
-    uint64_t seed = 3;
-    Xoroshiro128Plus generator(seed);
-
-    for (int64_t i = 0; i < SIZE; ++i) {
-        data[i] = (int64_t) generator();
+    int logical_threads = omp_get_num_procs();
+    if (logical_threads <= 0) {
+        logical_threads = omp_get_max_threads();
+    }
+    int max_threads = omp_get_max_threads();
+    int sweep_max_threads = 25;
+    if (thread_sweep.empty()) {
+        thread_sweep.reserve(sweep_max_threads);
+        for (int t = 1; t <= sweep_max_threads; ++t) {
+            thread_sweep.push_back(t);
+        }
     }
 
-    std::vector<int64_t> data_copy = data;  // duplicate data for min_max_quicksort
-    std::vector<int64_t> data_copy_parallel = data;  // duplicate data for __gnu_parallel::sort
+    int size_sweep_threads = logical_threads;
 
-    // threads used by min_max_quicksort and __gnu_parallel::sort
-    omp_set_num_threads(8);
+    std::ofstream out(output_path);
+    if (!out) {
+        std::cerr << "Failed to open output file: " << output_path << "\n";
+        return 1;
+    }
+    out << "mode,size,threads,algo,time_s\n";
+    out << std::fixed << std::setprecision(6);
 
-    // measure std::sort
-    double start = omp_get_wtime();
-    std::sort(data.begin(), data.end());
-    double end = omp_get_wtime();
-    double time_std_sort = end - start;
-    std::cout << "std::sort time: " << time_std_sort << " s\n\n";
+    // Thread sweep
+    std::cout << "Thread sweep: size=" << thread_size << ", trials=" << trials << "\n";
+    std::vector<int64_t> thread_data = generate_data(thread_size, seed);
 
-    // measure min_max_quicksort
-    start = omp_get_wtime();
-    min_max_quicksort(&data_copy[0], SIZE);
-    end = omp_get_wtime();
-    double time_min_max_quicksort = end - start;
-    std::cout << "min_max_quicksort time: " << time_min_max_quicksort << " s\n";
-    std::cout << "speedup over std::sort: " << time_std_sort / time_min_max_quicksort << "\n\n";
+    for (int threads : thread_sweep) {
+        std::cout << "  threads=" << threads << "\n";
+        double std_time_thread = benchmark_std_sort(thread_data, trials, verify);
+        out << "thread," << thread_size << "," << threads << ",std_sort," << std_time_thread << "\n";
 
-    // measure __gnu_parallel::sort
-    start = omp_get_wtime();
-    __gnu_parallel::sort(data_copy_parallel.begin(), data_copy_parallel.end());
-    end = omp_get_wtime();
-    double time_gnu_parallel = end - start;
+        double mm_time = benchmark_min_max(thread_data, threads, trials, verify);
+        out << "thread," << thread_size << "," << threads << ",min_max," << mm_time << "\n";
 
-    std::cout << "__gnu_parallel::sort time: " << time_gnu_parallel << " s\n";
-    std::cout << "speedup over std::sort: " << time_std_sort / time_gnu_parallel << "\n";
+        double gnu_time = benchmark_gnu_parallel(thread_data, threads, trials, verify);
+        out << "thread," << thread_size << "," << threads << ",gnu_parallel," << gnu_time << "\n";
+    }
+
+    // Size sweep
+    std::cout << "Size sweep: threads=" << size_sweep_threads << ", trials=" << trials << "\n";
+    for (int64_t size : size_sweep) {
+        std::cout << "  size=" << size << "\n";
+        std::vector<int64_t> size_data = generate_data(size, seed);
+        double std_time = benchmark_std_sort(size_data, trials, verify);
+        out << "size," << size << "," << 1 << ",std_sort," << std_time << "\n";
+
+        double mm_time = benchmark_min_max(size_data, size_sweep_threads, trials, verify);
+        out << "size," << size << "," << size_sweep_threads << ",min_max," << mm_time << "\n";
+
+        double gnu_time = benchmark_gnu_parallel(size_data, size_sweep_threads, trials, verify);
+        out << "size," << size << "," << size_sweep_threads << ",gnu_parallel," << gnu_time << "\n";
+    }
+
+    std::cout << "Results written to " << output_path << "\n";
+    return 0;
 }
