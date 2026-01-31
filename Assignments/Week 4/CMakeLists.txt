@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.1)
 project(Week4)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(MSVC)
@@ -21,5 +21,4 @@ find_package(OpenMP REQUIRED)
 # Executable with OpenMP
 add_executable(min_max_quicksort min_max_quicksort.cpp)
 target_link_libraries(min_max_quicksort PRIVATE OpenMP::OpenMP_CXX)
-target_compile_definitions(min_max_quicksort PRIVATE _GLIBCXX_PARALLEL)
 

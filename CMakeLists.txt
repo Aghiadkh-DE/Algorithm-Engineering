@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 4.1)
 project(Algorithm_Engineering)
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
 enable_testing()
 add_subdirectory("Assignments/Week 1")
