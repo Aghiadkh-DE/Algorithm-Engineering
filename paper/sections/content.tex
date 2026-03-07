@@ -1,0 +1,149 @@
+\section{Rights Information}
+
+Placeholder for rights information.
+
+\section{CCS Concepts and User-Defined Keywords}
+
+Placeholder for CCS concepts.
+
+\section{Sectioning Commands}
+
+Placeholder for sectioning commands.
+
+\subsection{Subsection}
+\label{sec:subsection}
+
+This is a placeholder subsection.
+
+\subsubsection{Subsubsection}
+\label{sec:subsubsection}
+
+This is a placeholder subsubsection.
+
+\paragraph{Paragraph}
+
+This is a placeholder paragraph.
+
+\subparagraph{Subparagraph}
+
+This is a placeholder subparagraph.
+
+\section{Tables}
+
+\begin{table}
+  \caption{Table placeholder}
+  \label{tab:freq}
+  \begin{tabular}{ccl}
+    \toprule
+    Column 1 & Column 2 & Column 3 \\
+    \midrule
+    Data 1 & Data 2 & Data 3 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Math Equations}
+
+\subsection{Inline (In-text) Equations}
+
+Placeholder for inline equations section.
+
+\subsection{Display Equations}
+
+Placeholder for display equations section.
+
+\begin{equation}
+  x = y + z
+\end{equation}
+
+\section{Figures}
+
+The ``\verb|figure|'' environment should be used for figures. One or
+more images can be placed within a figure. If your figure contains
+third-party material, you must clearly identify it as such, as shown
+in the example below.
+  \caption{Figure caption placeholder.}
+
+Your figures should contain a caption which describes the figure to
+the reader.
+
+Figure captions are placed {\itshape below} the figure.
+
+Every figure should also have a figure description unless it is purely
+decorative. These descriptions convey what's in the image to someone
+who cannot see it. They are also used by search engine crawlers for
+indexing images, and when images cannot be loaded.
+
+A figure description must be unformatted plain text less than 2000
+characters long (including spaces).  {\bfseries Figure descriptions
+  should not repeat the figure caption – their purpose is to capture
+  important information that is not already provided in the caption or
+  the main text of the paper.} For figures that convey important and
+complex new information, a short text description may not be
+adequate. More complex alternative descriptions can be placed in an
+appendix and referenced in a short figure description. For example,
+provide a data table capturing the information in a bar chart, or a
+structured list representing a graph.  For additional information
+regarding how best to write figure descriptions and why doing this is
+so important, please see
+\url{https://www.acm.org/publications/taps/describing-figures/}.
+
+\subsection{The ``Teaser Figure''}
+
+A ``teaser figure'' is an image, or set of images in one figure, that
+are placed after all author and affiliation information, and before
+the body of the article, spanning the page. If you wish to have such a
+figure in your article, place the command immediately before the
+\verb|\maketitle| command:
+\begin{verbatim}
+  \begin{teaserfigure}
+    \includegraphics[width=\textwidth]{sampleteaser}
+    \caption{figure caption}
+    \Description{figure description}
+  \end{teaserfigure}
+\end{verbatim}
+
+\section{Citations and Bibliographies}
+
+The use of \BibTeX\ for the preparation and formatting of one's
+references is strongly recommended. Authors' names should be complete
+--- use full first names (``Donald E. Knuth'') not initials
+(``D. E. Knuth'') --- and the salient identifying features of a
+reference should be included: title, year, volume, number, pages,
+article DOI, etc.
+
+
+Using traditional BibTeX, the bibliography is included automatically.
+Compile with: pdflatex, bibtex, pdflatex, pdflatex
+
+The command \verb|\addbibresource{bibfile}| declares the \BibTeX\ file to use
+in the {\bfseries preamble} (before the command
+``\verb|\begin{document}|'') of your \LaTeX\ source
+where ``\verb|bibfile|'' is the name, \emph{with} the ``\verb|.bib|'' suffix.
+Notice that \verb|\addbibresource| takes only one argument: to declare multiple files,
+use multiple instances of the command.
+
+Citations and references are numbered by default. A small number of
+ACM publications have citations and references formatted in the
+``author year'' style; for these exceptions, please pass the option \verb|style=acmauthoryear|
+to the \verb|biblatex| package loaded in the {\bfseries preamble} (before the command
+``\verb|\begin{document}|'') of your \LaTeX\ source.
+
+
+  Some example citations \cite{Abril07}.
+
+\section{Acknowledgments}
+
+Placeholder for acknowledgments.
+
+\section{Appendices}
+
+Placeholder for appendices.
+
+\section{Multi-language papers}
+
+Placeholder for multi-language papers section.
+
+\section{SIGCHI Extended Abstracts}
+
+Placeholder for SIGCHI Extended Abstracts section.

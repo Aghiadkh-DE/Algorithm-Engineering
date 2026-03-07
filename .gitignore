@@ -32,4 +32,12 @@
 *.out
 *.app
 
+# Binaries
+build
+cmake-build-debug
+cmake-build-release
+
+# Configs
+.vscode
+.idea
 
