@@ -15,6 +15,8 @@ else()
     add_compile_options(-Wall -Wextra -pedantic)
 endif()
 
+find_package(OpenMP REQUIRED)
+
 add_library(project_lib STATIC
     src/image/colorspace.cpp
     src/image/image_gray.cpp
@@ -40,6 +42,8 @@ add_library(project_lib STATIC
 target_include_directories(project_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
+
+target_link_libraries(project_lib PUBLIC OpenMP::OpenMP_CXX)
 
 add_executable(project_executable
     src/main/main.cpp
