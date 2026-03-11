@@ -3,7 +3,7 @@
 # LaTeX compilation script with bibtex support
 # This script compiles the LaTeX document and moves all temporary files to the 'out' directory
 
-SCRIPT_DIR="/mnt/c/Users/aghyd/CLionProjects/Algorithm-Engineering/paper"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR" || exit 1
 
 # Add library directory to LaTeX search path

@@ -12,6 +12,19 @@
 % Metadata Information => No Copy right for us
 \setcopyright{none}
 
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{tree}{
+    basicstyle=\ttfamily\small,
+    columns=fullflexible,
+    keepspaces=true,
+    frame=single,
+    breaklines=true,
+    showstringspaces=false
+}
+
+
 \begin{document}
 
 \title{A High-Performance Document Image Binarization
@@ -44,7 +57,8 @@
 \maketitle
 
 \input{sections/introduction}
-\input{sections/content}
+\input{sections/systemarchitecture}
+\input{sections/implementedBinzMethod}
 
 \bibliographystyle{plain}
 \bibliography{bibliography/sources}

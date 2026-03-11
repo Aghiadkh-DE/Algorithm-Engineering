@@ -1,0 +1,93 @@
+\section{Background}
+
+\section{System Architecture}
+
+The system implements a Scanned Document Enhancer designed for document quality improvement before printing or OCR processing. The architecture follows a modular C++ pipeline design with clear separation of concerns, enabling maintainable and testable code.
+
+The processing utilizes sequential pipeline stages, allowing users to customize the enhancement workflow based on their specific needs.
+
+OpenMP is also used for parallelization throughout compute-intensive operations to leverage multi-core CPU capabilities, significantly reducing processing time for large documents. The system uses the PPM P3 ASCII format for input and output images, which simplifies file handling and allows for easy debugging and visualization of intermediate results.
+
+The design follows header/implementation separation, with clear interfaces defined in header files and implementation details encapsulated in source files. This promotes code reusability and maintainability, allowing easy extension of the system with additional enhancement techniques in the future.
+
+\subsection{Main Components}
+
+The main components can be seen in the directory structure in Listing~\ref{lst:project_structure}:
+
+The CLI layer, implemented in \texttt{main.cpp}, serves as the entry point of the application and the pipeline orchestration module. This layer deals with parsing arguments and configuration management.
+
+The IO layer, located in the \texttt{io} directory, is responsible for reading and writing PPM images. It includes modules for handling the PPM P3 ASCII format, such as \texttt{ppm\_reader} and \texttt{ppm\_writer}, as well as a \texttt{token\_reader}. The \texttt{ppm\_reader} and \texttt{ppm\_writer} modules handle the specifics of reading and writing PPM files, while the \texttt{token\_reader} module provides utility functions for parsing the ASCII format.
+
+The Image Processing layer, located in the \texttt{image} directory, contains \texttt{GrayImage} as the main data structure for representing grayscale images. It contains the width, height, maxval, and flat vector data, along with colorspace utilities for converting between RGB and grayscale color spaces.
+
+The Operations layer, located in the \texttt{ops} directory, contains various image enhancement techniques, including denoising (median filter), background estimation and removal, contrast stretching, thresholding methods (Otsu's, Sauvola's, Nick's, Su's, and a proposed method), morphology operations (open and close), and border cleanup. Each operation is implemented in its own module, allowing modularity and ease of maintenance.
+
+Several operation modules utilize integral images for efficient computation of local statistics, while others rely on direct neighborhood processing. Additionally, OpenMP is used for parallelization to ensure high performance even when processing large documents.
+
+The Utility Layer in util directory provides \texttt{args\_parser} for command-line argument processing, logging for structured output and debugging, timing for performance measurement utilities, and clamp for mathematical helper functions. The Testing Framework in tests/ uses Catch2-based testing with 56 test cases and 1038 assertions, covering component testing for I/O and algorithms as well as integration testing, with validation for algorithm correctness and edge case handling.
+
+\begin{lstlisting}[caption={Project directory structure}, label={lst:project_structure}, style=tree]
+project/
+|-- CMakeLists.txt
+|-- data/
+|   |-- in.ppm
+|   `-- out.ppm
+|-- src/
+|   |-- main/
+|   |   `-- main.cpp
+|   |-- image/
+|   |   |-- image_gray.h/.cpp
+|   |   `-- colorspace.h/.cpp
+|   |-- io/
+|   |   |-- ppm_reader.h/.cpp
+|   |   |-- ppm_writer.h/.cpp
+|   |   `-- token_reader.h/.cpp
+|   |-- ops/
+|   |   |-- denoise_median.h/.cpp
+|   |   |-- background_estimate.h/.cpp
+|   |   |-- background_remove.h/.cpp
+|   |   |-- contrast_stretch.h/.cpp
+|   |   |-- threshold_otsu.h/.cpp
+|   |   |-- threshold_sauvola.h/.cpp
+|   |   |-- threshold_nick.h/.cpp
+|   |   |-- threshold_su.h/.cpp
+|   |   |-- threshold_proposed.h/.cpp
+|   |   |-- morphology.h/.cpp
+|   |   `-- border_cleanup.h/.cpp
+|   `-- util/
+|       |-- args_parser.h/.cpp
+|       |-- logging.h/.cpp
+|       |-- timing.h/.cpp
+|       `-- clamp.h
+`-- tests/
+    |-- io/
+    |   `-- test_ppm_io.cpp
+    `-- ops/
+        |-- test_otsu.cpp
+        |-- test_sauvola.cpp
+        `-- test_median.cpp
+\end{lstlisting}
+
+
+\subsection{Data Flow}
+
+The high-level pipeline follows the sequence:
+
+\begin{enumerate}
+    \item The user invokes the application via the command line, providing input and output file paths along with optional parameters for the enhancement pipeline.
+    \item The CLI layer parses the arguments and configures the processing pipeline accordingly.
+    \item The IO layer reads the input PPM image and converts it to a \texttt{GrayImage} format for processing.
+    \item The Image Processing layer applies the selected enhancement operations sequentially, with each operation taking the output of the previous one as input. Operations may utilize integral images for efficient local computations and OpenMP for parallel processing.
+    \item After processing, the final enhanced image is written back to a PPM file by the IO layer.
+\end{enumerate}
+
+
+The detailed processing steps begin with the Input Stage performing PPM P3 file parsing and validation. Color Conversion transforms RGB to grayscale using standard luminance weights. The Preprocessing Chain includes optional median denoising with a 3×3 kernel, background estimation via separable box blur, background removal with target brightness adjustment, and percentile-based contrast stretching.
+
+The Binarization Stage applies one of five configurable methods to the preprocessed image. The Postprocessing Chain performs optional morphological operations using a 3×3 structuring element and border cleanup with either fixed width or adaptive dark pixel removal. The Output Stage writes the final binary image as PPM P3 format.
+
+Memory Management utilizes single-pass processing to minimize memory footprint, in-place operations where algorithmically feasible, integral images precomputed for adaptive thresholding methods, and OpenMP parallelization with thread-local variables and reduction operations. This architecture ensures modularity, testability, and performance while maintaining code clarity and extensibility.
+
+
+
+
