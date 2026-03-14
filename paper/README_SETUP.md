@@ -16,6 +16,9 @@ sudo apt-get install texlive-extra-utils
 
 # Install chktex (for LaTeX linting)
 sudo apt-get install chktex
+
+# Install cm-super (provides Type1 Computer Modern fonts for font expansion support)
+sudo apt install cm-super
 ```
 
 **Verification:**
