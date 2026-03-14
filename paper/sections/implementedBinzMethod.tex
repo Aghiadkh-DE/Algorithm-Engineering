@@ -1,3 +1,326 @@
-\section{implemented Binarization Methods}
+\section{implementation}
+In this section, we will describe the implementation of all mentioned methods in the Processing layer and Operation layer of the system, starting with the denoising method, then background estimation and removal, followed by the binarization method, and finally the morphological operations. We will also discuss the parallelization techniques used in each method and how they contribute to the overall performance of the system.
+\subsection{Median Filter for Image Denoising}
 
-as is have been said before the system implements 5 different binarization methods, Otsu's, Sauvola's, Nick's, Su's, and a proposed method. The first three methods are implemented as described in their respective papers, while on the su method we have implemented the core idea of the method but with some modifications.
+For the denoising method, we implemented a median filter, which is a non-linear digital filtering technique. The median filter works by replacing each pixel value with the median value of the pixels in its $3 \times 3$ neighborhood. This method is effective in removing salt-and-pepper noise while preserving image edges.
+
+In our implementation, we iterate over every pixel, collect the values of its neighboring pixels, compute the median using std::nth\_element, and assign it to the output image. For border pixels, the coordinates are clamped so that the nearest valid edge pixels are reused.
+
+To improve performance, the filter is parallelized with OpenMP, allowing multiple image rows to be processed simultaneously by different threads.
+
+\subsection{Background Estimation}
+% https://www.cl72.org/090imagePLib/books/Gonzales,Woods-Digital.Image.Processing.4th.Edition.pdf page 328 -> Arithmetic Mean Filter
+
+To estimate the background of the image, we implemented a separable box blur filter. 
+The box blur computes the average intensity of pixels within a square neighborhood 
+defined by a radius $r$. Instead of computing a full two-dimensional convolution, 
+the filter is implemented as two one-dimensional passes: a horizontal pass followed 
+by a vertical pass. This technique significantly reduces computational complexity.
+
+Formally, the horizontal pass computes an intermediate image
+
+\[
+I_{\text{tmp}}(x,y) =
+\frac{1}{2r+1}
+\sum_{i=-r}^{r} I\bigl(\mathrm{clamp}(x+i), y\bigr),
+\]
+
+where:
+\begin{itemize}
+\item $I(x,y)$ is the intensity of the original image at position $(x,y)$,
+\item $I_{\text{tmp}}(x,y)$ is the intermediate image produced after the horizontal blur,
+\item $r$ is the radius of the blur window,
+\item $2r+1$ is the width of the averaging window,
+\item $\mathrm{clamp}(\cdot)$ restricts the coordinate to valid image boundaries.
+\end{itemize}
+
+The vertical pass computes the final background image as
+
+\[
+I_{\text{background}}(x,y) =
+\frac{1}{2r+1}
+\sum_{j=-r}^{r} I_{\text{tmp}}\bigl(x, \mathrm{clamp}(y+j)\bigr).
+\]
+
+where:
+\begin{itemize}
+\item $I_{\text{background}}(x,y)$ is the estimated background intensity,
+\item $I_{\text{tmp}}(x,y)$ is the horizontally blurred intermediate image,
+\item $r$ is the blur radius,
+\item $\mathrm{clamp}(\cdot)$ ensures that coordinates remain within valid image bounds.
+\end{itemize}
+
+Equivalently, this corresponds to averaging over a square neighborhood of size 
+$(2r+1)\times(2r+1)$:
+
+\[
+I_{\text{background}}(x,y) =
+\frac{1}{(2r+1)^2}
+\sum_{i=-r}^{r} \sum_{j=-r}^{r}
+I\bigl(\mathrm{clamp}(x+i), \mathrm{clamp}(y+j)\bigr).
+\]
+
+where:
+\begin{itemize}
+\item $(x,y)$ denotes the pixel position,
+\item $I(x,y)$ is the intensity of the original image,
+\item $r$ is the blur radius,
+\item $(2r+1)^2$ represents the total number of pixels in the square neighborhood.
+\end{itemize}
+
+In the horizontal pass, a sliding window of size $(2r+1)$ moves across each row of 
+the image. The sum of the pixel values inside the window is updated efficiently by 
+subtracting the value leaving the window and adding the value entering the window. 
+The average value of the window is then written to a temporary image.
+
+In the vertical pass, the same sliding-window approach is applied column-wise to the 
+temporary image to produce the final blurred background image.
+
+For border pixels, coordinates are clamped so that the nearest valid edge pixels 
+are reused. To improve performance, both passes are parallelized using OpenMP, 
+allowing multiple rows or columns to be processed simultaneously by different threads.
+
+\subsection{Background Removal}
+
+After estimating the background, it is removed from the denoised image through 
+pixel-wise subtraction. For each pixel, the background intensity is subtracted 
+from the denoised image intensity, and a constant target value is added to 
+maintain a suitable brightness level.
+
+Formally, the output pixel value is computed as
+
+\[
+I_{\text{out}}(x,y) =
+\mathrm{clamp}\big(
+I_{\text{denoised}}(x,y)
+-
+I_{\text{background}}(x,y)
++
+T
+\big),
+\]
+
+where:
+\begin{itemize}
+\item $I_{\text{denoised}}(x,y)$ is the intensity of the denoised image,
+\item $I_{\text{background}}(x,y)$ is the estimated background intensity,
+\item $T$ is a constant target intensity added to maintain brightness,
+\item $I_{\text{out}}(x,y)$ is the final output image after background removal,
+\item $\mathrm{clamp}(\cdot)$ restricts the result to the valid intensity range of the image.
+\end{itemize}
+
+This operation highlights foreground structures by removing slowly varying 
+background illumination while ensuring that pixel values remain within the 
+allowed intensity range.
+
+\subsection{Contrast Stretching}
+
+
+Contrast stretching is an image enhancement technique used to improve the contrast of a grayscale image by expanding the range of intensity values. In many images, the pixel intensities occupy only a small portion of the available dynamic range, which results in a low-contrast appearance. Contrast stretching addresses this problem by applying a linear transformation that maps the minimum and maximum intensity values of the image to the full available range.
+
+In our implementation, we first determine the minimum and maximum pixel intensity values present in the image, denoted by $I_{\min}$ and $I_{\max}$. Each pixel value $I$ is then transformed using the following linear scaling function:
+
+\[
+I' = \frac{I - I_{\min}}{I_{\max} - I_{\min}} \times I_{\text{maxval}}
+\]
+
+where:
+\begin{itemize}
+\item $I$ is the original pixel intensity,
+\item $I'$ is the transformed pixel intensity,
+\item $I_{\min}$ is the minimum intensity value in the image,
+\item $I_{\max}$ is the maximum intensity value in the image,
+\item $I_{\text{maxval}}$ is the maximum possible intensity value (e.g., 255 for an 8-bit image).
+\end{itemize}
+
+This transformation linearly stretches the intensity values so that the smallest value becomes $0$ and the largest value becomes $I_{\text{maxval}}$. As a result, the full dynamic range of the image is utilized, which increases the visual contrast.
+
+In addition to the standard contrast stretching method, we also implement a percentile-based variant. Instead of using the absolute minimum and maximum intensity values, lower and upper thresholds are determined using selected percentiles of the image histogram. This approach reduces the influence of outlier pixels and produces a more robust contrast enhancement.
+
+\subsection{Binarization methods}
+
+The binariation phase is responable for converting the preprocessed grayscale image into a binary image consisting of only black and white pixels. In our implementation, we provied serval methods for binarzation, including Otsu's method, Sauvola's method, Nick's method, Su's method, and a proposed method. these methods Implemented as described in the paper, but on methods such as proposed and su we applied some changes to the original method in order to make it more efficient for some use cases. These modifcations will be discuessed in the next sections.
+
+\subsubsection{Otsu's Method}
+
+In our implementation, Otsu's method is used as a global thresholding
+technique to convert the grayscale image into a binary image.
+The algorithm first computes the histogram of the image intensities.
+Each histogram entry counts the number of pixels having a specific
+intensity value.
+
+Using this histogram, the algorithm iterates over all possible
+threshold values $t$ in the intensity range $[0, I_{\text{max}}]$.
+For each candidate threshold, the pixels are divided into two classes:
+background and foreground.
+
+The number of pixels belonging to each class is computed as
+
+\[
+w_B(t) = \sum_{i=0}^{t} h(i), \qquad
+w_F(t) = N - w_B(t),
+\]
+
+where:
+\begin{itemize}
+\item $h(i)$ is the histogram value at intensity level $i$,
+\item $w_B(t)$ is the number of pixels in the background class,
+\item $w_F(t)$ is the number of pixels in the foreground class,
+\item $N$ is the total number of pixels in the image.
+\end{itemize}
+
+The mean intensity of each class is then calculated as
+
+\[
+\mu_B(t) = \frac{\sum_{i=0}^{t} i \cdot h(i)}{w_B(t)}, \qquad
+\mu_F(t) = \frac{\sum_{i=t+1}^{I_{\text{max}}} i \cdot h(i)}{w_F(t)}.
+\]
+
+Using these values, the between-class variance is computed as
+
+\[
+\sigma_B^2(t) = w_B(t)\,w_F(t)\,(\mu_B(t) - \mu_F(t))^2 .
+\]
+
+The algorithm selects the threshold $t^*$ that maximizes the
+between-class variance:
+
+\[
+t^* = \arg\max_t \sigma_B^2(t).
+\]
+
+After the optimal threshold is found, the binarization step is applied
+pixel-wise to the image. Each pixel is assigned either black or white
+depending on its intensity relative to the threshold:
+
+\[
+I_{\text{out}}(x,y) =
+\begin{cases}
+0, & I(x,y) \le t^* \\
+I_{\text{max}}, & I(x,y) > t^*
+\end{cases}
+\]
+
+where:
+\begin{itemize}
+\item $I(x,y)$ is the original pixel intensity,
+\item $I_{\text{out}}(x,y)$ is the resulting binary pixel value,
+\item $t^*$ is the optimal threshold computed by Otsu's method,
+\item $I_{\text{max}}$ is the maximum intensity value (e.g., 255).
+\end{itemize}
+
+In the implementation, the final binarization step is parallelized
+using OpenMP, allowing multiple pixels to be processed simultaneously.
+
+\subsubsection{Implementation of NICK's Method}
+
+In our implementation, NICK's method is used as a local adaptive thresholding
+technique. Unlike global thresholding methods, it computes a separate threshold
+for each pixel based on the statistics of its local neighborhood. The input image
+is first validated by checking the image dimensions, the maximum intensity value,
+the data size, and the window radius.
+
+To efficiently compute local statistics, two integral images are constructed:
+one for the sum of pixel intensities and one for the sum of squared intensities.
+These integral images allow the sum and squared sum over any rectangular window
+to be obtained in constant time.
+
+For a pixel at position $(x,y)$, a local window of radius $r$ is defined around
+the pixel. The window boundaries are clamped to the valid image region. Let the
+window corners be $(x_0,y_0)$ and $(x_1,y_1)$. The number of pixels inside the
+window is given by
+
+\[
+A = (x_1 - x_0 + 1)(y_1 - y_0 + 1),
+\]
+
+where:
+\begin{itemize}
+\item $A$ is the area of the local window,
+\item $(x_0,y_0)$ and $(x_1,y_1)$ are the top-left and bottom-right coordinates
+of the local neighborhood.
+\end{itemize}
+
+Using the integral image, the sum of all pixel intensities inside the local
+window is computed as
+
+\[
+S(x,y) = \sum_{j=y_0}^{y_1} \sum_{i=x_0}^{x_1} I(i,j),
+\]
+
+and the sum of squared intensities is computed as
+
+\[
+S_2(x,y) = \sum_{j=y_0}^{y_1} \sum_{i=x_0}^{x_1} I(i,j)^2.
+\]
+
+where:
+\begin{itemize}
+\item $I(i,j)$ is the grayscale intensity at pixel $(i,j)$,
+\item $S(x,y)$ is the sum of intensities in the local window,
+\item $S_2(x,y)$ is the sum of squared intensities in the local window.
+\end{itemize}
+
+From these values, the local mean intensity is calculated as
+
+\[
+m(x,y) = \frac{S(x,y)}{A},
+\]
+
+and the local variance is computed as
+
+\[
+\sigma^2(x,y) = \frac{S_2(x,y)}{A} - m(x,y)^2.
+\]
+
+The local standard deviation is then obtained by
+
+\[
+\sigma(x,y) = \sqrt{\sigma^2(x,y)}.
+\]
+
+where:
+\begin{itemize}
+\item $m(x,y)$ is the local mean intensity,
+\item $\sigma^2(x,y)$ is the local variance,
+\item $\sigma(x,y)$ is the local standard deviation.
+\end{itemize}
+
+The threshold in NICK's method is computed as
+
+\[
+T(x,y) = m(x,y) + k \cdot \sigma(x,y),
+\]
+
+where:
+\begin{itemize}
+\item $T(x,y)$ is the local threshold for pixel $(x,y)$,
+\item $k$ is a user-defined parameter that controls the threshold shift.
+\end{itemize}
+
+In our implementation, the parameter $k$ is typically chosen as a negative value,
+which lowers the threshold and improves the detection of darker foreground
+structures.
+
+Finally, the output binary image is generated by comparing each pixel value with
+its local threshold:
+
+\[
+I_{\text{out}}(x,y) =
+\begin{cases}
+0, & I(x,y) \leq T(x,y) \\
+I_{\text{max}}, & I(x,y) > T(x,y)
+\end{cases}
+\]
+
+where:
+\begin{itemize}
+\item $I(x,y)$ is the original pixel intensity,
+\item $I_{\text{out}}(x,y)$ is the resulting binary pixel value,
+\item $I_{\text{max}}$ is the maximum possible intensity value of the image.
+\end{itemize}
+
+To improve performance, the binarization step is parallelized using OpenMP, so
+that multiple image rows can be processed simultaneously. The use of integral
+images reduces the cost of computing local sums and variances, making the method
+efficient even for larger window sizes.
