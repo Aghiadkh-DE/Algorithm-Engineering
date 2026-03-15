@@ -32,13 +32,7 @@ The Utility Layer in util directory provides \texttt{args\_parser} for command-l
 
 The high-level pipeline follows the sequence:
 
-\begin{enumerate}
-    \item The user invokes the application via the command line, providing input and output file paths along with optional parameters for the enhancement pipeline.
-    \item The CLI layer parses the arguments and configures the processing pipeline accordingly.
-    \item The IO layer reads the input PPM image and converts it to a \texttt{GrayImage} format for processing.
-    \item The Image Processing layer applies the selected enhancement operations sequentially, with each operation taking the output of the previous one as input. Operations may utilize integral images for efficient local computations and OpenMP for parallel processing.
-    \item After processing, the final enhanced image is written back to a PPM file by the IO layer.
-\end{enumerate}
+The pipeline begins when the user invokes the application from the command line, providing input and output file paths together with optional parameters for the enhancement workflow. The CLI layer then parses these arguments and configures the processing pipeline accordingly. Next, the IO layer reads the input PPM image and converts it into a \texttt{GrayImage} representation for internal processing. The Image Processing layer subsequently applies the selected enhancement operations in sequence, with each stage consuming the output of the previous one; depending on the chosen operations, this stage may use integral images for efficient local computations and OpenMP for parallel execution. Finally, once processing is complete, the IO layer writes the enhanced image back to a PPM file.
 
 
 The detailed processing steps begin with the Input Stage performing PPM P3 file parsing and validation. Color Conversion transforms RGB to grayscale using standard luminance weights. The Preprocessing Chain includes optional median denoising with a 3×3 kernel, background estimation via separable box blur, background removal with target brightness adjustment, and percentile-based contrast stretching.
