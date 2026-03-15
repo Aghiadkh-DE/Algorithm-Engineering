@@ -13,7 +13,7 @@ To improve performance, the filter is parallelized with OpenMP, allowing multipl
 \subsection{Background Estimation}
 % https://www.cl72.org/090imagePLib/books/Gonzales,Woods-Digital.Image.Processing.4th.Edition.pdf page 328 -> Arithmetic Mean Filter
 
-To estimate the background of the image, we implemented a separable box blur filter. 
+To estimate the background of the image, we implemented a separable box blur filter~\cite{Gonzalez2008Digital}. 
 The box blur computes the average intensity of pixels within a square neighborhood 
 defined by a radius $r$. Instead of computing a full two-dimensional convolution, 
 the filter is implemented as two one-dimensional passes: a horizontal pass followed 
@@ -96,7 +96,7 @@ allowed intensity range.
 \subsection{Contrast Stretching}
 
 
-Contrast stretching is an image enhancement technique used to improve the contrast of a grayscale image by expanding the range of intensity values. In many images, the pixel intensities occupy only a small portion of the available dynamic range, which results in a low-contrast appearance. Contrast stretching addresses this problem by applying a linear transformation that maps the minimum and maximum intensity values of the image to the full available range.
+Contrast stretching is an image enhancement technique used to improve the contrast of a grayscale image by expanding the range of intensity values. In many images, the pixel intensities occupy only a small portion of the available dynamic range, which results in a low-contrast appearance. Contrast stretching addresses this problem by applying a linear transformation that maps the minimum and maximum intensity values of the image to the full available range~\cite{Gonzalez2008Digital}.
 
 In our implementation, we first determine the minimum and maximum pixel intensity values present in the image, denoted by $I_{\min}$ and $I_{\max}$. Each pixel value $I$ is then transformed using the following linear scaling function:
 
@@ -115,7 +115,7 @@ In addition to the standard contrast stretching method, we also implement a perc
 The binarization phase is responsible for converting the preprocessed grayscale image into a binary image consisting of only black and white pixels. In our implementation, several binarization methods are provided, including Otsu's method, Sauvola's method, Nick's method, Su et al.'s method, and the adaptive thresholding method proposed by Bataineh et al. Most of these methods are implemented as described in their respective papers. However, for some methods, such as the adaptive thresholding method by Bataineh et al. and the method by Su et al., certain modifications were introduced to improve efficiency for specific use cases. These modifications, along with the implementation details, are discussed in the following sections.
 
 \subsubsection{Otsu's Method}
-In our implementation, Otsu's method \cite{otsu1979threshold} is used as a global thresholding
+In our implementation, Otsu's method~\cite{otsu1979threshold} is used as a global thresholding
 technique to convert the grayscale image into a binary image.
 The algorithm first computes the histogram of the image intensities.
 Each histogram entry counts the number of pixels having a specific
