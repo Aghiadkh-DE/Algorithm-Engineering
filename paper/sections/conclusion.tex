@@ -1,6 +1,6 @@
 \section{Conclusion}
 
-In this paper, we presented a high-performance document image binarization pipeline that integrates multiple preprocessing techniques and binarization methods, all accelerated through OpenMP parallelization. The pipeline was implemented in a modular C++ architecture, allowing flexible composition of denoising, background estimation and removal, contrast stretching, and five different binarization algorithms: Otsu's method, Nick's method, Sauvola's method, the Su-Lu-Tan method, and a proposed adaptive method.
+In this paper, we presented parallelized document image binarization pipeline that integrates multiple preprocessing techniques and binarization methods, all accelerated through OpenMP parallelization. The pipeline was implemented in a modular C++ architecture, allowing flexible composition of denoising, background estimation and removal, contrast stretching, and five different binarization algorithms: Otsu's method, Nick's method, Sauvola's method, the Su-Lu-Tan method, and Bataineh et al.'s method \cite{Bataineh2011}.
 
 Table~\ref{tab:binarization-results} presents the visual results of all implemented binarization methods applied to a sample Arabic calligraphy document. For the preprocessing variant, only contrast stretching with percentile-based thresholds was applied before binarization.
 
