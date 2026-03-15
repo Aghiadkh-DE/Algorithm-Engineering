@@ -115,7 +115,7 @@ In addition to the standard contrast stretching method, we also implement a perc
 The binarization phase is responsible for converting the preprocessed grayscale image into a binary image consisting of only black and white pixels. In our implementation, several binarization methods are provided, including Otsu's method, Sauvola's method, Nick's method, Su et al.'s method, and the adaptive thresholding method proposed by Bataineh et al. Most of these methods are implemented as described in their respective papers. However, for some methods, such as the adaptive thresholding method by Bataineh et al. and the method by Su et al., certain modifications were introduced to improve efficiency for specific use cases. These modifications, along with the implementation details, are discussed in the following sections.
 
 \subsubsection{Otsu's Method}
-In our implementation, Otsu's method is used as a global thresholding
+In our implementation, Otsu's method \cite{otsu1979threshold} is used as a global thresholding
 technique to convert the grayscale image into a binary image.
 The algorithm first computes the histogram of the image intensities.
 Each histogram entry counts the number of pixels having a specific
@@ -175,7 +175,7 @@ using OpenMP, allowing multiple pixels to be processed simultaneously.
 % https://www.researchgate.net/publication/221253803_Comparison_of_Niblack_inspired_Binarization_Methods_for_Ancient_Documents nick method
 \subsubsection{Nick's Method}
 
-Nick's method is implemented as a local thresholding algorithm that
+Nick's method~\cite{khurshid2009comparison} is implemented as a local thresholding algorithm that
 computes a threshold for every pixel based on the intensity statistics
 of its surrounding neighborhood.
 
@@ -228,7 +228,7 @@ simultaneously.
 
 \subsubsection{Sauvola's Method}
 
-Sauvola's method is implemented as a local thresholding algorithm in
+Sauvola's method~\cite{Sauvola2000} is implemented as a local thresholding algorithm in
 which a separate threshold is computed for each pixel based on the
 intensity statistics of its surrounding neighborhood.
 
@@ -282,7 +282,7 @@ simultaneously.
 
 \subsubsection{Adaptive Thresholding Method by Bataineh et al}
 
-The adaptive thresholding method proposed by Bataineh et al. is implemented as a local thresholding algorithm
+The adaptive thresholding method~\cite{Bataineh2011} proposed by Bataineh et al. is implemented as a local thresholding algorithm
 that combines global image statistics with local window statistics.
 
 To efficiently compute the required local statistics, two integral
@@ -375,7 +375,7 @@ processed simultaneously.
 
 \subsubsection{Su, Lu, Tan (2010) Method}
 
-The method proposed by Su et al. (2010) is designed for the
+The method proposed~\cite{Su2010} by Su et al. (2010) is designed for the
 binarization of degraded document images, particularly historical
 documents affected by uneven illumination, background noise, and
 ink bleeding. The method first detects high-contrast pixels around
