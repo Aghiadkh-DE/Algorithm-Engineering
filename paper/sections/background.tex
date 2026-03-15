@@ -1,2 +1,26 @@
 \section{Background}
 
+As discussed earlier in the introduction, scanned documents or images often require preprocessing steps to enhance their quality for OCR using binarization techniques. However, binarization in itself could also suffer if the scanned document contain significant noise and therefore the binarization stage may fail to separate the foreground from the background adequately. For that reason, preprocessing techniques can also be applied before the binarization step in order to prevent the noise from affecting the foreground-background separation. Furthermore, post-processing techniques can also be applied to remove artifacts or noise that may be left after the thresholding step or remove dark borders that are usually left over by scanners when documents or books are not placed evenly on the scanner bed. 
+
+The literature provides a wide variety of techniques for preprocessing and post-processing for scanned document enhancement, alongside a numerous variety of binarization algorithms. These approaches are incorporated into the processing pipeline proposed in this paper, which is describes in sections \ref{sec:systemarchitecture} and \ref{sec:implementation}.
+
+\subsection{Preprocessing}
+
+\subsubsection{Non-linear Filtering}
+
+The most trivial approach for the median filter was discussed by Gonzalez and Woods in their book "Digital Image Processing"~\cite{gonzalez2008digital}. Their algorithm is non-linear filtering approach that operates on each pixel and its surrounding neighborhood to remove salt-and-pepper noise sparsely distributed across the image. The median intensity of the nine pixels in the window is computed (the current pixel and its 8 neighbors) and replaces the current pixel, which is the center pixel, with the calculated median value. Therefore, this filter is effective when the noise is sparse and does not cover large regions of the image, because a dark pixel surrounded by brighter neighboring pixels will yield a larger median intensity value, and thus the median value becomes higher, replacing the corrupted pixel with a brighter intensity value. The reverse also applies when the pixel is a light pixel surrounded by dark pixels. There are several variations of this filter implementation that are asymptotically more optimized. Common optimizations are proposed by Huang et al.~\cite{1163188} and Perreault et al.~\cite{4287006}.
+
+\subsubsection{Linear Filtering}
+
+A similar approach to the median filter is the background estimation method, which is dicussed by Gonzalez and Woods in their book "Digital Image Processing"~\cite{gonzalez2008digital}. In contrast to median filtering, this approach is linear and operates also on neighboring pixels by computing the sum of the pixel values within a specified window and then dividing by the number of pixels in that window. This method is computationally more efficient than the median filter, because to compute a median value, the values requires either sorting or a selection algorithm such as \textit{median of medians} has to be used. Although \textit{median of medians} asymptotically also has linear asymptotic time complexity, it still requires more computations per iteration compared to simple accumulation of pixel values and summing them up. 
+
+\subsubsection{Contrast Stretching}
+
+Some image documents may suffer from low contrast and therefore have a narrow range of pixel intensities between foreground and background pixels. In such cases, improving the contrast between the foreground and background can help the binarization process as well as the OCR later on. The main idea is to make darker pixels more dark and lighter pixels more light, so that the contrast in the image improves overall. There are several approaches for contrast stretching, the simplest of which is the global linear contrast stretching method, which is discussed by Gonzalez and Woods~\cite{gonzalez2008digital}. Other optimizations were also proposed in the literature, such as the contribution from Su et al.~\cite{6373726}, where they proposed a local contrast stretching strategy instead of global-based stretching. The benefit of their approach lies in the fact that their method is more robust to local variations in the image with uneven illumination and degradation. Compared to the global approaches, the local approach is less sensitive to max/min outliers in the image. This is usually the case when the image is heavily degraded.
+
+\subsection{Processing}
+
+
+
+\subsection{Post-processing}
+
