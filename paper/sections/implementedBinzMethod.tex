@@ -1,4 +1,4 @@
-\section{implementation}
+\section{Implementation}
 \label{sec:implementation}
 
 In this section, we will describe the implementation of all mentioned methods in the Processing layer and Operation layer of the system, starting with the denoising method, then background estimation and removal, followed by the binarization method, and finally the morphological operations. We will also discuss the parallelization techniques used in each method and how they contribute to the overall performance of the system.
@@ -112,7 +112,7 @@ In addition to the standard contrast stretching method, we also implement a perc
 
 \subsection{Binarization methods}
 
-The binarization phase is responsible for converting the preprocessed grayscale image into a binary image consisting of only black and white pixels. In our implementation, we provide several methods for binarization, including Otsu's method, Sauvola's method, Nick's method, Su's method, and a proposed method. Most of these methods are implemented as described in the paper, but for some of these methods, such as the proposed method and the Su, Lu, and Tu method, we applied some changes to the original method in order to make it more efficient for some use cases. These modifications, alongside the implementation, will be discussed in the next sections.
+The binarization phase is responsible for converting the preprocessed grayscale image into a binary image consisting of only black and white pixels. In our implementation, several binarization methods are provided, including Otsu's method, Sauvola's method, Nick's method, Su et al.'s method, and the adaptive thresholding method proposed by Bataineh et al. Most of these methods are implemented as described in their respective papers. However, for some methods, such as the adaptive thresholding method by Bataineh et al. and the method by Su et al., certain modifications were introduced to improve efficiency for specific use cases. These modifications, along with the implementation details, are discussed in the following sections.
 
 \subsubsection{Otsu's Method}
 In our implementation, Otsu's method is used as a global thresholding
@@ -280,9 +280,9 @@ pixel in the image. To improve performance, this step is parallelized
 using OpenMP so that multiple image rows can be processed
 simultaneously.
 
-\subsubsection{Proposed Method}
+\subsubsection{Adaptive Thresholding Method by Bataineh et al}
 
-The proposed method is implemented as a local thresholding algorithm
+The adaptive thresholding method proposed by Bataineh et al. is implemented as a local thresholding algorithm
 that combines global image statistics with local window statistics.
 
 To efficiently compute the required local statistics, two integral
@@ -332,8 +332,7 @@ Using these values, the adaptive standard deviation is computed as:
 {\sigma_{\max} - \sigma_{\min}}.
 \]
 
-The threshold for each pixel is then calculated using the proposed
-formula
+The threshold for each pixel is then calculated as:
 
 \[
 T = m_w -
@@ -341,7 +340,7 @@ T = m_w -
 {(m_g + \sigma_w)(\sigma_{Adaptive} + \sigma_w)}.
 \]
 
-\paragraph{Modification of the Proposed Method}
+\paragraph{Modification of the Adaptive Thresholding Method}
 
 In the original formulation presented in the paper, all pixel
 intensity values are normalized to the range $[0,1]$ before computing
@@ -376,7 +375,7 @@ processed simultaneously.
 
 \subsubsection{Su, Lu, Tan (2010) Method}
 
-The method proposed by Su, Lu, and Tan (2010) is designed for the
+The method proposed by Su et al. (2010) is designed for the
 binarization of degraded document images, particularly historical
 documents affected by uneven illumination, background noise, and
 ink bleeding. The method first detects high-contrast pixels around
