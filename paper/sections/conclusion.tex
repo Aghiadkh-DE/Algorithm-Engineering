@@ -8,39 +8,7 @@ The results show that the choice of binarization method and the use of preproces
 
 Sauvola's method, on the other hand, failed to produce a usable result without preprocessing, yielding a nearly blank output. This is because Sauvola's local threshold depends heavily on the local standard deviation, and the low contrast of the original image caused the threshold to remain too high across most regions. After applying contrast stretch percentile preprocessing, Sauvola's method recovered and produced a result with well-defined strokes, although some background noise artifacts appeared around the text boundaries.
 
-Nick's method with preprocessing produced results comparable to Sauvola's preprocessed output, with clear stroke shapes but noticeable speckle noise in the background regions. The Su-Lu-Tan method exhibited background noise in both configurations, with the preprocessed variant introducing heavier speckle artifacts throughout the image. This is likely due to the contrast-based edge detection step being affected by the enhanced intensity range after preprocessing. The proposed method without preprocessing lost significant portions of the text strokes, producing incomplete characters. With preprocessing, the proposed method recovered most of the stroke detail but introduced considerable background noise.
+Nick's method with preprocessing produced results comparable to Sauvola's preprocessed output, with clear stroke shapes but noticeable speckle noise in the background regions. The Su-Lu-Tan method exhibited background noise in both configurations, with the preprocessed variant introducing heavier speckle artifacts throughout the image. This is likely due to the contrast-based edge detection step being affected by the enhanced intensity range after preprocessing. The proposed method is sensitive to the choice of window radius. Without preprocessing and with a large radius, portions of the text strokes appeared but with significant loss of detail. However, with a smaller radius such as 10 (corresponding to a 21$\times$21 window), the text failed to appear entirely. With preprocessing, the proposed method using the appropriate radius recovered most of the stroke detail but introduced considerable background noise.
 
 Overall, the results demonstrate that preprocessing with contrast stretch percentile is essential for local adaptive methods such as Sauvola's and the proposed method when applied to low-contrast document images. Otsu's global approach proved to be the most robust on this sample, while the local methods offer potential advantages on documents with spatially varying illumination or degradation when paired with appropriate preprocessing. The OpenMP parallelization applied throughout the pipeline ensures that all methods can process large document images efficiently on multi-core systems.
 
-\begin{table*}[htbp]
-\centering
-\caption{Binarization results of all implemented methods, without and with preprocessing (contrast stretch percentile).}
-\label{tab:binarization-results}
-\begin{tabular}{|c|c|c|}
-\hline
-\textbf{Method} & \textbf{Without Preprocessing} & \textbf{With Preprocessing} \\
-\hline
-Original & \multicolumn{2}{c|}{\includegraphics[width=0.35\textwidth]{images/test.jpg}} \\
-\hline
-Otsu &
-\includegraphics[width=0.35\textwidth]{images/otsu.png} &
-\includegraphics[width=0.35\textwidth]{images/otsu_with_preprosseing.png} \\
-\hline
-Nick &
---- &
-\includegraphics[width=0.35\textwidth]{images/nick_with_preprosseing.png} \\
-\hline
-Sauvola &
-\includegraphics[width=0.35\textwidth]{images/sauvola.png} &
-\includegraphics[width=0.35\textwidth]{images/sauvola_with_preprosseing.png} \\
-\hline
-Su &
-\includegraphics[width=0.35\textwidth]{images/su.png} &
-\includegraphics[width=0.35\textwidth]{images/su_with_preprosseing.png} \\
-\hline
-Proposed &
-\includegraphics[width=0.35\textwidth]{images/proposed.png} &
-\includegraphics[width=0.35\textwidth]{images/proposed_with_preprosseing.png} \\
-\hline
-\end{tabular}
-\end{table*}

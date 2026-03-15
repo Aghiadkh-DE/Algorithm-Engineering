@@ -27,14 +27,7 @@ I_{\text{tmp}}(x,y) =
 \sum_{i=-r}^{r} I\bigl(\mathrm{clamp}(x+i), y\bigr),
 \]
 
-where:
-\begin{itemize}
-\item $I(x,y)$ is the intensity of the original image at position $(x,y)$,
-\item $I_{\text{tmp}}(x,y)$ is the intermediate image produced after the horizontal blur,
-\item $r$ is the radius of the blur window,
-\item $2r+1$ is the width of the averaging window,
-\item $\mathrm{clamp}(\cdot)$ restricts the coordinate to valid image boundaries.
-\end{itemize}
+where $I(x,y)$ is the intensity of the original image at position $(x,y)$, $I_{\text{tmp}}(x,y)$ is the intermediate image produced after the horizontal blur, $r$ is the radius of the blur window, $2r+1$ is the width of the averaging window, and $\mathrm{clamp}(\cdot)$ restricts the coordinate to valid image boundaries.
 
 The vertical pass computes the final background image as
 
@@ -44,13 +37,7 @@ I_{\text{background}}(x,y) =
 \sum_{j=-r}^{r} I_{\text{tmp}}\bigl(x, \mathrm{clamp}(y+j)\bigr).
 \]
 
-where:
-\begin{itemize}
-\item $I_{\text{background}}(x,y)$ is the estimated background intensity,
-\item $I_{\text{tmp}}(x,y)$ is the horizontally blurred intermediate image,
-\item $r$ is the blur radius,
-\item $\mathrm{clamp}(\cdot)$ ensures that coordinates remain within valid image bounds.
-\end{itemize}
+where $I_{\text{background}}(x,y)$ is the estimated background intensity, $I_{\text{tmp}}(x,y)$ is the horizontally blurred intermediate image, $r$ is the blur radius, and $\mathrm{clamp}(\cdot)$ ensures that coordinates remain within valid image bounds.
 
 Equivalently, this corresponds to averaging over a square neighborhood of size 
 $(2r+1)\times(2r+1)$:
@@ -62,13 +49,7 @@ I_{\text{background}}(x,y) =
 I\bigl(\mathrm{clamp}(x+i), \mathrm{clamp}(y+j)\bigr).
 \]
 
-where:
-\begin{itemize}
-\item $(x,y)$ denotes the pixel position,
-\item $I(x,y)$ is the intensity of the original image,
-\item $r$ is the blur radius,
-\item $(2r+1)^2$ represents the total number of pixels in the square neighborhood.
-\end{itemize}
+where $(x,y)$ denotes the pixel position, $I(x,y)$ is the intensity of the original image, $r$ is the blur radius, and $(2r+1)^2$ represents the total number of pixels in the square neighborhood.
 
 In the horizontal pass, a sliding window of size $(2r+1)$ moves across each row of 
 the image. The sum of the pixel values inside the window is updated efficiently by 
@@ -89,7 +70,7 @@ pixel-wise subtraction. For each pixel, the background intensity is subtracted
 from the denoised image intensity, and a constant target value is added to 
 maintain a suitable brightness level.
 
-Formally, the output pixel value is computed as
+Formally, the output pixel value is computed as:
 
 \[
 I_{\text{out}}(x,y) =
@@ -102,14 +83,11 @@ T
 \big),
 \]
 
-where:
-\begin{itemize}
-\item $I_{\text{denoised}}(x,y)$ is the intensity of the denoised image,
-\item $I_{\text{background}}(x,y)$ is the estimated background intensity,
-\item $T$ is a constant target intensity added to maintain brightness,
-\item $I_{\text{out}}(x,y)$ is the final output image after background removal,
-\item $\mathrm{clamp}(\cdot)$ restricts the result to the valid intensity range of the image.
-\end{itemize}
+where $I_{\text{denoised}}(x,y)$ is the intensity of the denoised image,\\
+$I_{\text{background}}(x,y)$ is the estimated background intensity
+$T$ is a constant target intensity added to maintain brightness,
+$I_{\text{out}}(x,y)$ is the final output image after background removal,
+and $\mathrm{clamp}(\cdot)$ restricts the result to the valid intensity range.
 
 This operation highlights foreground structures by removing slowly varying 
 background illumination while ensuring that pixel values remain within the 
@@ -126,14 +104,7 @@ In our implementation, we first determine the minimum and maximum pixel intensit
 I' = \frac{I - I_{\min}}{I_{\max} - I_{\min}} \times I_{\text{maxval}}
 \]
 
-where:
-\begin{itemize}
-\item $I$ is the original pixel intensity,
-\item $I'$ is the transformed pixel intensity,
-\item $I_{\min}$ is the minimum intensity value in the image,
-\item $I_{\max}$ is the maximum intensity value in the image,
-\item $I_{\text{maxval}}$ is the maximum possible intensity value (e.g., 255 for an 8-bit image).
-\end{itemize}
+where $I$ is the original pixel intensity, $I'$ is the transformed pixel intensity, $I_{\min}$ is the minimum intensity value in the image, $I_{\max}$ is the maximum intensity value in the image, and $I_{\text{maxval}}$ is the maximum possible intensity value (e.g., 255 for an 8-bit image).
 
 This transformation linearly stretches the intensity values so that the smallest value becomes $0$ and the largest value becomes $I_{\text{maxval}}$. As a result, the full dynamic range of the image is utilized, which increases the visual contrast.
 
@@ -155,29 +126,23 @@ threshold values $t$ in the intensity range $[0, I_{\text{max}}]$.
 For each candidate threshold, the pixels are divided into two classes:
 background and foreground.
 
-The number of pixels belonging to each class is computed as
+The number of pixels belonging to each class is computed as:
 
 \[
 w_B(t) = \sum_{i=0}^{t} h(i), \qquad
 w_F(t) = N - w_B(t),
 \]
 
-where:
-\begin{itemize}
-\item $h(i)$ is the histogram value at intensity level $i$,
-\item $w_B(t)$ is the number of pixels in the background class,
-\item $w_F(t)$ is the number of pixels in the foreground class,
-\item $N$ is the total number of pixels in the image.
-\end{itemize}
+where $h(i)$ is the histogram value at intensity level $i$, $w_B(t)$ is the number of pixels in the background class, $w_F(t)$ is the number of pixels in the foreground class, and $N$ is the total number of pixels in the image.
 
-The mean intensity of each class is then calculated as
+The mean intensity of each class is then calculated as:
 
 \[
 \mu_B(t) = \frac{\sum_{i=0}^{t} i \cdot h(i)}{w_B(t)}, \qquad
 \mu_F(t) = \frac{\sum_{i=t+1}^{I_{\text{max}}} i \cdot h(i)}{w_F(t)}.
 \]
 
-Using these values, the between-class variance is computed as
+Using these values, the between-class variance is computed as:
 
 \[
 \sigma_B^2(t) = w_B(t)\,w_F(t)\,(\mu_B(t) - \mu_F(t))^2 .
@@ -202,13 +167,7 @@ I_{\text{max}}, & I(x,y) > t^*
 \end{cases}
 \]
 
-where:
-\begin{itemize}
-\item $I(x,y)$ is the original pixel intensity,
-\item $I_{\text{out}}(x,y)$ is the resulting binary pixel value,
-\item $t^*$ is the optimal threshold computed by Otsu's method,
-\item $I_{\text{max}}$ is the maximum intensity value (e.g., 255).
-\end{itemize}
+where $I(x,y)$ is the original pixel intensity, $I_{\text{out}}(x,y)$ is the resulting binary pixel value, $t^*$ is the optimal threshold computed by Otsu's method, and $I_{\text{max}}$ is the maximum intensity value (e.g., 255).
 
 In the implementation, the final binarization step is parallelized
 using OpenMP, allowing multiple pixels to be processed simultaneously.
@@ -233,8 +192,8 @@ The number of pixels inside the window is denoted by $A(x,y)$.
 
 Using the integral images, the sum of intensities $S(x,y)$ and the sum
 of squared intensities $S_2(x,y)$ inside the window are computed. From
-these values, the local mean and the second moment are calculated as
-
+these values, the local mean and the second moment are calculated as:
+:
 \[
 m(x,y) = \frac{S(x,y)}{A(x,y)}, \qquad
 M_2(x,y) = \frac{S_2(x,y)}{A(x,y)}.
@@ -287,7 +246,7 @@ The number of pixels inside the window is denoted by $A(x,y)$.
 Using the integral images, the sum of intensities $S(x,y)$ and the sum
 of squared intensities $S_2(x,y)$ inside the window are computed. From
 these values, the local mean, variance, and standard deviation are
-calculated as
+calculated as:
 
 \[
 m(x,y) = \frac{S(x,y)}{A(x,y)}, \qquad
@@ -343,7 +302,7 @@ The number of pixels inside the window is denoted by $A(x,y)$.
 
 Using the integral images, the sum of intensities $S(x,y)$ and the sum
 of squared intensities $S_2(x,y)$ inside the window are computed.
-From these values, the local mean and variance are calculated as
+From these values, the local mean and variance are calculated as:
 
 \[
 m_w = \frac{S(x,y)}{A(x,y)}, \qquad
@@ -354,7 +313,7 @@ M_2 = \frac{S_2(x,y)}{A(x,y)},
 \mathrm{Var} = M_2 - m_w^2.
 \]
 
-The local standard deviation of the window is then obtained as
+The local standard deviation of the window is then obtained as:
 
 \[
 \sigma_w = \sqrt{\mathrm{Var}}.
@@ -365,7 +324,7 @@ $\sigma_w$ are computed for all windows in order to determine the
 minimum and maximum standard deviation values,
 $\sigma_{\min}$ and $\sigma_{\max}$.
 
-Using these values, the adaptive standard deviation is computed as
+Using these values, the adaptive standard deviation is computed as:
 
 \[
 \sigma_{Adaptive} =
@@ -393,7 +352,7 @@ which is originally computed in the normalized range $[0,1]$, is
 converted back to the raw intensity scale to maintain unit consistency
 within the threshold equation.
 
-This conversion is performed as
+This conversion is performed as:
 
 \[
 \sigma_{Adaptive}^{raw} =
@@ -430,7 +389,7 @@ The algorithm begins by constructing a contrast image that highlights
 pixels located around text stroke boundaries. Instead of using the
 traditional image gradient, the contrast is computed using the local
 maximum and minimum intensities within a small neighborhood window.
-For each pixel $(x,y)$, the contrast value is defined as
+For each pixel $(x,y)$, the contrast value is defined as:
 
 \[
 D(x,y) =
@@ -444,7 +403,7 @@ $(x,y)$, and $\epsilon$ is a small positive constant used to avoid
 division by zero. This formulation normalizes the local intensity
 difference and reduces the effect of illumination variation across
 the document image. As a result, pixels located near text stroke
-boundaries typically produce higher contrast values. \cite{su2010}
+boundaries typically produce higher contrast values.
 
 \paragraph{High Contrast Pixel Detection}
 
@@ -455,7 +414,7 @@ with contrast values greater than or equal to this threshold are
 classified as high-contrast pixels, which usually correspond to text
 stroke boundaries.
 
-Formally, a binary edge mask $E(x,y)$ is defined as
+Formally, a binary edge mask $E(x,y)$ is defined as:
 
 \[
 E(x,y) =
@@ -491,7 +450,7 @@ the intensity statistics of these high-contrast pixels.
 
 Let $E_{\text{mean}}$ and $E_{\text{std}}$ denote the mean and
 standard deviation of the intensities of the detected edge pixels
-within the window. The classification rule is then defined as
+within the window. The classification rule is then defined as:
 
 \[
 R(x,y) =

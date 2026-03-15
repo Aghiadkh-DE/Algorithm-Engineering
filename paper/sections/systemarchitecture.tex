@@ -25,47 +25,7 @@ Several operation modules utilize integral images for efficient computation of l
 
 The Utility Layer in util directory provides \texttt{args\_parser} for command-line argument processing, logging for structured output and debugging, timing for performance measurement utilities, and clamp for mathematical helper functions. The Testing Framework in tests/ uses Catch2-based testing with 56 test cases and 1038 assertions, covering component testing for I/O and algorithms as well as integration testing, with validation for algorithm correctness and edge case handling.
 
-\begin{lstlisting}[caption={Project directory structure}, label={lst:project_structure}, style=tree]
-project/
-|-- CMakeLists.txt
-|-- data/
-|   |-- in.ppm
-|   `-- out.ppm
-|-- src/
-|   |-- main/
-|   |   `-- main.cpp
-|   |-- image/
-|   |   |-- image_gray.h/.cpp
-|   |   `-- colorspace.h/.cpp
-|   |-- io/
-|   |   |-- ppm_reader.h/.cpp
-|   |   |-- ppm_writer.h/.cpp
-|   |   `-- token_reader.h/.cpp
-|   |-- ops/
-|   |   |-- denoise_median.h/.cpp
-|   |   |-- background_estimate.h/.cpp
-|   |   |-- background_remove.h/.cpp
-|   |   |-- contrast_stretch.h/.cpp
-|   |   |-- threshold_otsu.h/.cpp
-|   |   |-- threshold_sauvola.h/.cpp
-|   |   |-- threshold_nick.h/.cpp
-|   |   |-- threshold_su.h/.cpp
-|   |   |-- threshold_proposed.h/.cpp
-|   |   |-- morphology.h/.cpp
-|   |   `-- border_cleanup.h/.cpp
-|   `-- util/
-|       |-- args_parser.h/.cpp
-|       |-- logging.h/.cpp
-|       |-- timing.h/.cpp
-|       `-- clamp.h
-`-- tests/
-    |-- io/
-    |   `-- test_ppm_io.cpp
-    `-- ops/
-        |-- test_otsu.cpp
-        |-- test_sauvola.cpp
-        `-- test_median.cpp
-\end{lstlisting}
+
 
 
 \subsection{Data Flow}
